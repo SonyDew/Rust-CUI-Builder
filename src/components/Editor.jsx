@@ -1,11 +1,12 @@
 import React, { startTransition, useDeferredValue, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Copy, Download, PlusSquare, Save, Trash2 } from 'lucide-react';
+import { ArrowLeft, Copy, Download, FileCode, PlusSquare, Save, Trash2 } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 import { usePlan } from '../context/PlanContext';
 import { useToast } from '../context/ToastContext';
 import ProjectPreview from './ProjectPreview';
 import { exportFromEditor } from '../utils/projectFile';
+import { exportCSharpFromEditor } from '../utils/csharpExport';
 import { isOnline, onConnectivityChange, processOfflineQueue, queueOfflineSave } from '../utils/offline';
 import { DEFAULT_PROJECT_BACKGROUND } from '../utils/brandAssets';
 import './Editor.css';
@@ -18,9 +19,9 @@ const DEFAULT_SETTINGS = { uiName: 'MyCustomUI', layer: 'Overlay', chatCommand: 
 const PRESETS = {
   Panel: { color: '0.10 0.16 0.22 0.92', opacity: 100, anchor: { min: '0.32 0.30', max: '0.68 0.66' }, offset: { minX: 0, minY: 0, maxX: 0, maxY: 0 }, rotation: 0, align: 'MiddleCenter' },
   Text: { text: 'Header text', color: '#f5fbff', opacity: 100, font: 'RobotoCondensed-Bold.ttf', fontSize: 34, anchor: { min: '0.38 0.54', max: '0.62 0.60' }, offset: { minX: 0, minY: 0, maxX: 0, maxY: 0 }, rotation: 0, align: 'MiddleCenter' },
-  Button: { text: 'Click me', color: '0.05 0.35 0.68 0.96', opacity: 100, textColor: '#ffffff', font: 'RobotoCondensed-Bold.ttf', fontSize: 24, anchor: { min: '0.40 0.38', max: '0.60 0.46' }, offset: { minX: 0, minY: 0, maxX: 0, maxY: 0 }, rotation: 0, align: 'MiddleCenter' },
+  Button: { text: 'Click me', color: '0.05 0.35 0.68 0.96', opacity: 100, textColor: '#ffffff', font: 'RobotoCondensed-Bold.ttf', fontSize: 24, command: '', closeUi: false, anchor: { min: '0.40 0.38', max: '0.60 0.46' }, offset: { minX: 0, minY: 0, maxX: 0, maxY: 0 }, rotation: 0, align: 'MiddleCenter' },
   Image: { imageUrl: '', color: '#ffffff', opacity: 100, anchor: { min: '0.08 0.14', max: '0.24 0.42' }, offset: { minX: 0, minY: 0, maxX: 0, maxY: 0 }, rotation: 0, align: 'MiddleCenter' },
-  InputField: { text: 'Input...', color: '0.12 0.16 0.22 0.95', opacity: 100, textColor: '#d7ecff', font: 'RobotoCondensed-Regular.ttf', fontSize: 22, anchor: { min: '0.34 0.24', max: '0.66 0.31' }, offset: { minX: 0, minY: 0, maxX: 0, maxY: 0 }, rotation: 0, align: 'MiddleLeft' }
+  InputField: { text: 'Input...', color: '0.12 0.16 0.22 0.95', opacity: 100, textColor: '#d7ecff', font: 'RobotoCondensed-Regular.ttf', fontSize: 22, command: '', charsLimit: 0, anchor: { min: '0.34 0.24', max: '0.66 0.31' }, offset: { minX: 0, minY: 0, maxX: 0, maxY: 0 }, rotation: 0, align: 'MiddleLeft' }
 };
 
 const localDraftKey = (projectId) => `${LOCAL_DRAFT_PREFIX}${projectId}`;
@@ -204,6 +205,32 @@ const Editor = () => {
   });
   const updateOffsetValue = (key, value) => patchSelected((element) => ({ ...element, offset: { ...element.offset, [key]: toNumber(value, element.offset?.[key] || 0) } }));
   const saveLabel = saveState === 'saving' ? 'Saving...' : saveState === 'queued' ? 'Queued offline' : saveState === 'local' ? 'Local draft' : saveState === 'dirty' ? 'Unsaved changes' : lastSavedAt ? `Saved ${new Date(lastSavedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : 'Saved';
+  const exportProject = { name: projectName?.trim() || 'Untitled', elements, settings: { ...DEFAULT_SETTINGS, ...settings } };
+  const handleExportRcui = async () => {
+    try {
+      await exportFromEditor({
+        projectName,
+        elements,
+        uiName: settings.uiName,
+        layer: settings.layer,
+        chatCommand: settings.chatCommand,
+        consoleCommand: settings.consoleCommand,
+        permission: settings.permission,
+        backgroundUrl: settings.backgroundUrl,
+      });
+      showToast('Exported .rcui backup', 'success');
+    } catch (error) {
+      showToast(error?.message || 'Failed to export .rcui project file', 'error');
+    }
+  };
+  const handleExportCSharp = () => {
+    try {
+      exportCSharpFromEditor(exportProject);
+      showToast('Exported C# plugin starter code', 'success');
+    } catch (error) {
+      showToast(error?.message || 'Failed to export C# plugin code', 'error');
+    }
+  };
 
   if (loading) return <div className="route-loader">Loading editor...</div>;
   if (errorMessage && !elements.length) return <div className="route-loader">{errorMessage}</div>;
@@ -256,7 +283,8 @@ const Editor = () => {
           <div className="editor-toolbar-group">
             <button className="glass-btn" onClick={() => void persistProject(true)}><Save size={16} style={{ marginRight: '8px' }} />Save</button>
             <button className="glass-btn" onClick={duplicateSelected} disabled={!selectedElement}><Copy size={16} style={{ marginRight: '8px' }} />Duplicate</button>
-            <button className="glass-btn" onClick={() => exportFromEditor({ projectName, elements, uiName: settings.uiName, layer: settings.layer, chatCommand: settings.chatCommand, consoleCommand: settings.consoleCommand, permission: settings.permission, backgroundUrl: settings.backgroundUrl })}><Download size={16} style={{ marginRight: '8px' }} />Export</button>
+            <button className="glass-btn" onClick={handleExportCSharp}><FileCode size={16} style={{ marginRight: '8px' }} />Export C#</button>
+            <button className="glass-btn" onClick={() => void handleExportRcui()}><Download size={16} style={{ marginRight: '8px' }} />Export .rcui</button>
           </div>
         </div>
         <div className="editor-canvas-wrap">
@@ -301,6 +329,14 @@ const Editor = () => {
                 <Field label="Font"><select value={selectedElement.font || FONT_OPTIONS[0]} onChange={(event) => patchSelected((element) => ({ ...element, font: event.target.value }))}>{FONT_OPTIONS.map((font) => <option key={font} value={font}>{font}</option>)}</select></Field>
                 <Field label="Font Size"><input type="number" value={selectedElement.fontSize || 18} onChange={(event) => patchSelected((element) => ({ ...element, fontSize: toNumber(event.target.value, 18) }))} /></Field>
                 <Field label="Align" full><select value={selectedElement.align || 'MiddleCenter'} onChange={(event) => patchSelected((element) => ({ ...element, align: event.target.value }))}>{ALIGN_OPTIONS.map((align) => <option key={align} value={align}>{align}</option>)}</select></Field>
+              </>}
+              {selectedElement.type === 'Button' && <>
+                <Field label="Console Command" full><input value={selectedElement.command || ''} onChange={(event) => patchSelected((element) => ({ ...element, command: event.target.value }))} placeholder="example.openmenu" /></Field>
+                <Field label="Close UI"><select value={selectedElement.closeUi ? 'yes' : 'no'} onChange={(event) => patchSelected((element) => ({ ...element, closeUi: event.target.value === 'yes' }))}><option value="no">No</option><option value="yes">Yes</option></select></Field>
+              </>}
+              {selectedElement.type === 'InputField' && <>
+                <Field label="Submit Command" full><input value={selectedElement.command || ''} onChange={(event) => patchSelected((element) => ({ ...element, command: event.target.value }))} placeholder="example.submit" /></Field>
+                <Field label="Char Limit"><input type="number" min="0" value={selectedElement.charsLimit || 0} onChange={(event) => patchSelected((element) => ({ ...element, charsLimit: Math.max(0, Math.round(toNumber(event.target.value, 0)) || 0) }))} /></Field>
               </>}
               {selectedElement.type === 'Image' && <Field label="Image URL" full><input value={selectedElement.imageUrl || ''} onChange={(event) => patchSelected((element) => ({ ...element, imageUrl: event.target.value }))} /></Field>}
               <Field label="Anchor Min X"><input type="number" step="0.01" value={parseAnchor(selectedElement.anchor?.min).x} onChange={(event) => updateAnchorValue('min', 'x', event.target.value)} /></Field>

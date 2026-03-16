@@ -1,9 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, X, ExternalLink, Zap, Star, Bug, Wrench } from 'lucide-react';
 
-const CURRENT_VERSION = '1.5.0';
+const CURRENT_VERSION = '1.6.0';
 
 const changelog = [
+    {
+        version: '1.6.0',
+        date: '2026-03-16',
+        entries: [
+            { type: 'feature', text: 'Export projects as Rust C# plugin starter files' },
+            { type: 'feature', text: 'Buttons and input fields now expose command settings for generated code' },
+            { type: 'improvement', text: 'Dashboard and editor now separate C# export from .rcui backup export' },
+        ],
+    },
     {
         version: '1.5.0',
         date: '2026-03-04',
@@ -98,7 +107,7 @@ const changelog = [
             { type: 'feature', text: 'Property inspector — anchors, offsets, colors, fonts, shadows, and more' },
             { type: 'feature', text: 'Element hierarchy panel with nesting, visibility, and lock toggles' },
             { type: 'feature', text: 'Color picker with hex/RGB input and recent colors' },
-            { type: 'feature', text: 'Code generation — export your designs as Rust CUI code' },
+            { type: 'feature', text: 'Code generation — export your designs as Rust C# UI starter code' },
             { type: 'feature', text: 'Auto-save as you work' },
             { type: 'feature', text: 'Project dashboard with search, create, rename, and trash' },
             { type: 'feature', text: 'Keyboard shortcuts for duplicate, delete, multi-select, and more' },

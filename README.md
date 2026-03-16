@@ -9,8 +9,8 @@ In one sentence: this is a browser-based constructor for custom Rust server
 menus and panels.
 
 In practice, you open the editor, place panels, text, buttons, and images,
-preview the layout, save project versions, and export the result for use in
-your Rust plugin workflow.
+preview the layout, save project versions, and export the result either as a
+Rust C# plugin starter file or as a `.rcui` project backup for your workflow.
 
 This repository contains the web app itself plus optional backend scaffolding
 for auth, cloud sync, billing, and encrypted project files.
@@ -23,7 +23,7 @@ the project.
 - lets you design Rust CUI layouts visually
 - previews how a menu or panel will look before you wire it into a plugin
 - stores projects, drafts, tags, favorites, and shared views
-- exports and imports `.rcui` project files
+- exports Rust C# plugin starter code and imports/exports `.rcui` project files
 - provides optional cloud features for auth, tickets, notifications, and billing
 
 ## Who It Is For
@@ -40,6 +40,7 @@ interface layer used by Rust server plugins.
 - React 18 + Vite frontend
 - Node/Express API scaffold for Stripe, security events, and RCUI crypto
 - Supabase migrations for app data, access rules, storage, and billing metadata
+- C# plugin starter export and `.rcui` backup export
 - visual editor for Rust CUI layouts
 - dashboard with favorites, tags, drafts, trash, and previews
 - auth and onboarding flows

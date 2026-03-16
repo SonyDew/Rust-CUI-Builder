@@ -36,6 +36,7 @@ import {
     Upload
 } from 'lucide-react';
 import { exportProject, importProject } from '../utils/projectFile';
+import { exportCSharpProject } from '../utils/csharpExport';
 import SupportTicket from './SupportTicket';
 import './Dashboard.css';
 import ProjectPreview from './ProjectPreview';
@@ -152,9 +153,19 @@ const Dashboard = () => {
         e.stopPropagation();
         try {
             await exportProject(project, session?.access_token);
-            showToast(`Exported "${project.name}" as .rcui file`, 'success');
+            showToast(`Exported "${project.name}" as a .rcui backup`, 'success');
         } catch (err) {
             showToast(err.message || 'Failed to export project', 'error');
+        }
+    };
+
+    const handleExportCSharp = (e, project) => {
+        e.stopPropagation();
+        try {
+            exportCSharpProject(project);
+            showToast(`Exported "${project.name}" as a C# plugin`, 'success');
+        } catch (err) {
+            showToast(err.message || 'Failed to export C# plugin', 'error');
         }
     };
 
@@ -1072,10 +1083,16 @@ const Dashboard = () => {
                                                 ) : (
                                                     !project.isDemo && (
                                                         <>
+                                                            <FileCode
+                                                                size={18}
+                                                                className="delete-btn"
+                                                                title="Export C# plugin"
+                                                                onClick={(e) => handleExportCSharp(e, project)}
+                                                            />
                                                             <Download
                                                                 size={18}
                                                                 className="delete-btn"
-                                                                title="Export as .rcui"
+                                                                title="Export .rcui backup"
                                                                 onClick={(e) => handleExportProject(e, project)}
                                                             />
                                                             <Trash2

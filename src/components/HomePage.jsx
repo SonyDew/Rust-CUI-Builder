@@ -39,15 +39,15 @@ const HomePage = () => {
                         <div className="feature-item">
                             <div className="feature-icon"><Code size={24} /></div>
                             <div className="feature-text">
-                                <h3>Code Generation</h3>
-                                <p>Auto-generate clean C# plugin code from your designs</p>
+                                <h3>C# Plugin Export</h3>
+                                <p>Generate a Rust plugin starter file from your current layout</p>
                             </div>
                         </div>
                         <div className="feature-item">
                             <div className="feature-icon"><Zap size={24} /></div>
                             <div className="feature-text">
-                                <h3>Instant Export</h3>
-                                <p>Generate production-ready C# Plugin code instantly</p>
+                                <h3>Project Backups</h3>
+                                <p>Download .rcui files for backups, handoff, or reuse later</p>
                             </div>
                         </div>
                     </div>
@@ -64,7 +64,7 @@ const HomePage = () => {
                         <img src={BRAND_ASSETS.logo} alt="Rust CUI Builder" style={{ width: '64px', height: '64px', marginBottom: '24px', animation: 'scaleIn 0.5s ease-out 0.2s both' }} />
                         <h2 className="home-title">Build Rust UIs Visually</h2>
                         <p className="home-subtitle">
-                            The fastest way to design and export CUI interfaces for your Rust game server plugins.
+                            Design Rust CUI layouts visually and export C# plugin starter code or .rcui project files.
                         </p>
 
                         {isLocalMode && (
@@ -85,8 +85,8 @@ const HomePage = () => {
 
                         <div className="home-features">
                             <div className="home-feature-pill"><Layers size={14} /> Drag & Drop</div>
-                            <div className="home-feature-pill"><Code size={14} /> C# Export</div>
-                            <div className="home-feature-pill"><Zap size={14} /> Real-time Preview</div>
+                            <div className="home-feature-pill"><Code size={14} /> C# Plugin Export</div>
+                            <div className="home-feature-pill"><Zap size={14} /> .rcui Backups</div>
                         </div>
 
                         <button

@@ -245,8 +245,8 @@ const Auth = () => {
                         <div className="feature-item">
                             <div className="feature-icon"><Zap size={24} /></div>
                             <div className="feature-text">
-                                <h3>Instant Export</h3>
-                                <p>Generate production-ready C# Plugin code instantly</p>
+                                <h3>C# Plugin Export</h3>
+                                <p>Generate a Rust plugin starter file from your current layout</p>
                             </div>
                         </div>
                     </div>

@@ -21,6 +21,7 @@ production hardening.
 - auth screens and onboarding flow
 - dashboard with project browsing, tags, favorites, drafts, and trash
 - editor route with local save fallback
+- C# plugin starter export and `.rcui` backup export
 - support tickets UI and realtime client hooks
 - plans page with backend-aware billing behavior
 - share, legal, admin, and desktop callback routes
