@@ -251,7 +251,7 @@ const Auth = () => {
                         </div>
                     </div>
                     <div className="showcase-footer">
-                        <p>© 2026 Hex Plugins. All rights reserved.</p>
+                        <p>© 2026 SonyDev. All rights reserved.</p>
 
                     </div>
                 </div>

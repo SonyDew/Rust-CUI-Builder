@@ -1,6 +1,6 @@
 Rust CUI Builder Proprietary License
 
-Copyright (c) 2026 Hex Plugins.
+Copyright (c) 2026 SonyDev.
 All rights reserved.
 
 This repository and all accompanying source code, bundled assets, design files,
@@ -9,8 +9,8 @@ proprietary and confidential. No open source license is granted.
 
 1. Authorized Access
 
-You may access and use the contents of this repository only if you are Hex
-Plugins or a person or entity expressly authorized in writing by Hex Plugins to
+You may access and use the contents of this repository only if you are SonyDev
+or a person or entity expressly authorized in writing by SonyDev to
 work on, review, deploy, or operate Rust CUI Builder.
 
 2. No Public License
@@ -35,8 +35,8 @@ You may not:
 
 Third-party libraries, frameworks, fonts, icons, services, and other
 dependencies referenced by this project remain subject to their own licenses and
-terms. This license applies only to proprietary portions controlled by Hex
-Plugins.
+terms. This license applies only to proprietary portions controlled by
+SonyDev.
 
 5. Confidentiality
 
@@ -53,8 +53,7 @@ unauthorized copies under your control.
 7. Separate Commercial Rights
 
 If you need redistribution, resale, white-label, public hosting, or broader
-commercial rights, you must obtain a separate written agreement from Hex
-Plugins.
+commercial rights, you must obtain a separate written agreement from SonyDev.
 
 8. No Warranty
 
@@ -65,11 +64,11 @@ NON-INFRINGEMENT.
 
 9. Limitation of Liability
 
-TO THE MAXIMUM EXTENT PERMITTED BY LAW, HEX PLUGINS WILL NOT BE LIABLE FOR ANY
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, SONYDEV WILL NOT BE LIABLE FOR ANY
 INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, CONSEQUENTIAL, OR LOSS-OF-PROFIT
 DAMAGES ARISING FROM OR RELATED TO THE USE OF THIS REPOSITORY OR THE SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 
 10. Reservation of Rights
 
-All rights not expressly granted by this license are reserved by Hex Plugins.
+All rights not expressly granted by this license are reserved by SonyDev.

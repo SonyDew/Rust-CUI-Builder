@@ -20,7 +20,7 @@ const LegalModal = ({ onClose, initialTab = 'tos' }) => {
                         <p>By using Rust CUI Builder, you agree to these strict Terms. If you do not agree, strictly do not use this Service.</p>
 
                         <h4>2. Intellectual Property Rights</h4>
-                        <p>All source code, UI designs, UX flows, and features are the exclusive property of Rust CUI Builder.</p>
+                        <p>All source code, UI designs, UX flows, and features are the exclusive property of SonyDev.</p>
                         <p><strong>YOU MAY NOT:</strong></p>
                         <ul>
                             <li>Copy the specific look and feel of the interface.</li>
@@ -50,7 +50,7 @@ const LegalModal = ({ onClose, initialTab = 'tos' }) => {
                 return (
                     <div className="legal-text">
                         <h3>Proprietary License</h3>
-                        <p><strong>Copyright (c) 2026 Rust CUI Builder.</strong></p>
+                        <p><strong>Copyright (c) 2026 SonyDev.</strong></p>
                         <p><strong>Status: PROPRIETARY & CONFIDENTIAL</strong></p>
 
                         <p>This is NOT open source software. It is a closed-source, proprietary tool.</p>

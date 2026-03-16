@@ -15,6 +15,9 @@ your Rust plugin workflow.
 This repository contains the web app itself plus optional backend scaffolding
 for auth, cloud sync, billing, and encrypted project files.
 
+Rust CUI Builder is the product name. SonyDev is the owner and publisher of
+the project.
+
 ## What This Project Does
 
 - lets you design Rust CUI layouts visually
