@@ -2,7 +2,12 @@
   "name": "rust-cui-builder",
   "private": true,
   "version": "0.2.0",
+  "description": "Browser client for Rust CUI Builder built with React and Vite.",
+  "license": "UNLICENSED",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",

@@ -1,122 +1,101 @@
 # Rust CUI Builder
 
-> React + Vite application for building Rust CUI layouts visually.
+Rust CUI Builder is a React + Vite client for designing Rust game UI layouts in
+a visual editor instead of hand-writing every panel and element.
 
-![Status](https://img.shields.io/badge/status-active_development-1f8b4c)
-![License](https://img.shields.io/badge/license-proprietary-red)
-![Frontend](https://img.shields.io/badge/frontend-React%20%2B%20PWA-0d99ff)
-![Backend](https://img.shields.io/badge/backend-Supabase%20%2B%20custom%20API-3ecf8e)
+This repository already contains a working web app with auth screens,
+dashboard flows, support tickets, plan management UI, share/legal/admin pages,
+and a browser-based editor. Some product features still depend on Supabase and
+backend routes that are not included here.
 
-> [!IMPORTANT]
-> The repository contains a working client application. Billing, encryption, and some realtime features still depend on configured Supabase services and companion API routes.
+## What is in this repository
 
-## Overview
+- React 18 + Vite frontend
+- visual editor for Rust CUI layouts
+- dashboard with favorites, tags, drafts, trash, and previews
+- auth and onboarding flows
+- support ticket UI with realtime chat
+- plan and billing UI
+- `.rcui` import/export support
+- PWA assets and service worker
 
-Rust CUI Builder is aimed at Rust server and plugin developers who want to design game UI layouts visually instead of hand-authoring every screen. The current repository includes:
+## Getting Started
 
-- project management, previews, favorites, tags, drafts, and trash handling
-- Supabase-backed auth, storage, realtime, and collaboration flows
-- plan gating for Free, Solo, and Team subscriptions
-- support tickets and notification workflows
-- offline/PWA behavior with a service worker and queued saves
-- `.rcui` export and import flows
-- legal, share, admin, and desktop callback routes
-- a working browser-based editor
+Requirements:
 
-## Quick Start
+- Node.js 20 or newer
+- npm
+
+Install and run the client:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Production build:
+Build for production:
 
 ```bash
 npm run build
 ```
 
-Optional environment variables:
+## Environment
+
+Copy [.env.example](./.env.example) to `.env.local`
+and fill in the values you have:
 
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
-- `VITE_ENABLE_CLIENT_SECURITY=false` to disable the client security overlay in local development
+- `VITE_ENABLE_CLIENT_SECURITY=false` for local debugging if you need to bypass
+  the browser-side security overlay
 
-## Project Status
+Without Supabase credentials the app still starts, but cloud-backed features
+such as auth, notifications, sync, and billing cannot work.
 
-| Area | Status |
-| --- | --- |
-| Authentication and onboarding | Working |
-| Dashboard, favorites, tags, trash, previews | Working |
-| Notifications and support tickets | Working with Supabase |
-| Plans, billing UI, and Stripe handoff | UI present, backend required |
-| Offline queue and service worker | Working |
-| Desktop auth callback route | Working |
-| Visual editor | Working locally and with cloud sync when configured |
-| Admin, share, and legal routes | Working |
-| Local Vite build | Working |
-
-## Architecture
-
-```mermaid
-flowchart LR
-    Client["React / PWA client"] --> Supabase["Supabase<br/>Auth + Postgres + Realtime + Storage"]
-    Client --> API["Companion API"]
-    API --> Crypto["RCUI encryption / decryption"]
-    API --> Stripe["Stripe checkout / billing portal"]
-```
-
-## Repository Layout
+## Project Layout
 
 ```text
 Rust-CUI-Builder/
-|- src/                 # application source
-|- public/              # PWA icons, branding, and static files
-|- assets/              # shared imported CSS assets
-|- docs/                # project notes and audit
+|- src/                 # app source
+|- public/              # static files, icons, service worker assets
+|- assets/              # imported CSS bundles used by current screens
+|- docs/                # contributor-facing project documentation
 |- README.md
-|- LICENSE
+|- CONTRIBUTING.md
 |- CHANGELOG.md
+|- LICENSE
 |- package.json
 \- vite.config.js
 ```
 
-## Feature Highlights
+## Current State
 
-- Visual Rust CUI workflow with layered editing, previews, and export-ready metadata.
-- Project organization with search, tagging, favorites, drafts, and trash states.
-- Collaboration patterns with notifications, comments/share flows, and support tickets.
-- `.rcui` import/export support for transfer and backup workflows.
-- PWA shell with offline queue handling and reconnect sync behavior.
-- In-app release history covering versions `1.0.0` through `1.5.0`.
+Working in the frontend today:
 
-## Environment and Companion Services
+- auth and onboarding UI
+- dashboard navigation and project management views
+- editor with local draft fallback
+- support ticket screens and realtime hooks
+- plans page and Stripe handoff UI
+- share, legal, admin, and desktop callback routes
 
-For full cloud functionality the client expects:
+Still missing or external:
 
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY`
-- API routes for `/api/security/event`
-- API routes for `/api/rcui/encrypt` and `/api/rcui/decrypt`
-- API routes for `/api/stripe/create-checkout`, `/api/stripe/subscription/:id`, and `/api/stripe/portal`
-- server-side encryption material for `.rcui` handling
+- live Supabase project with the expected schema, policies, and storage bucket
+- backend routes for Stripe, RCUI encryption, and security events
+- automated tests
+- desktop packaging code
 
-An `.env.example` file is included for the client-side values referenced in source. Without them, the app still starts and keeps local editor state where fallback paths are implemented.
+## Continuing Development
 
-## Remaining Gaps
+If you want to keep building the project, start here:
 
-- Stripe, security logging, and encrypted `.rcui` flows still require backend routes.
-- Supabase-backed features need real credentials plus matching tables and policies.
-- Native desktop packaging is not included in this repository.
-
-For a fuller breakdown, see [docs/PROJECT_AUDIT.md](docs/PROJECT_AUDIT.md).
-
-## Changelog
-
-The in-app release history is mirrored in [CHANGELOG.md](CHANGELOG.md).
+- [CONTRIBUTING.md](./CONTRIBUTING.md)
+- [docs/PROJECT_STATUS.md](./docs/PROJECT_STATUS.md)
+- [docs/BACKEND_REQUIREMENTS.md](./docs/BACKEND_REQUIREMENTS.md)
+- [CHANGELOG.md](./CHANGELOG.md)
 
 ## License
 
-This repository currently ships under a proprietary source-available license.
-
-See [LICENSE](LICENSE).
+This repository is not open source. See [LICENSE](./LICENSE)
+before copying, redistributing, or contributing to the codebase.

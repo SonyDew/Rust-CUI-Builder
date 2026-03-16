@@ -62,7 +62,7 @@ const OnboardingSurvey = ({ onComplete }) => {
     ];
 
     const primaryUseOptions = [
-        { label: '� Game Server Plugins', value: 'game_plugins' },
+        { label: 'Game Server Plugins', value: 'game_plugins' },
         { label: '🔧 Admin Tools & Panels', value: 'admin_tools' },
         { label: '🏪 Shop & Economy Systems', value: 'economy' },
         { label: '👥 Player Management UIs', value: 'player_management' },
