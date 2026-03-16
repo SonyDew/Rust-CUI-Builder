@@ -1,0 +1,220 @@
+.editor-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr) 360px;
+  background:
+    radial-gradient(circle at top right, rgba(13, 153, 255, 0.18), transparent 20%),
+    var(--bg-app);
+}
+
+.editor-sidebar {
+  padding: 22px 20px;
+  border-right: 1px solid var(--border);
+  background: rgba(8, 17, 29, 0.88);
+  backdrop-filter: blur(18px);
+  overflow-y: auto;
+}
+
+.editor-sidebar--right {
+  border-right: none;
+  border-left: 1px solid var(--border);
+}
+
+.editor-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(9, 19, 31, 0.72);
+  backdrop-filter: blur(14px);
+}
+
+.editor-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.editor-project-name {
+  min-width: 180px;
+  max-width: 340px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.editor-status {
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.editor-canvas-wrap {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  overflow: auto;
+}
+
+.editor-preview-frame {
+  width: min(100%, 1100px);
+  padding: 24px;
+  border-radius: 26px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
+}
+
+.editor-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  margin-bottom: 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+}
+
+.editor-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.editor-micro-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.editor-stat {
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.editor-stat strong {
+  display: block;
+  font-size: 1.1rem;
+  color: var(--text-main);
+}
+
+.editor-library {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.editor-library button,
+.editor-layer {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.editor-library button {
+  padding: 12px;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.editor-layer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 360px;
+  overflow: auto;
+}
+
+.editor-layer {
+  width: 100%;
+  text-align: left;
+  color: var(--text-secondary);
+  padding: 12px 14px;
+  cursor: pointer;
+}
+
+.editor-layer.is-selected,
+.editor-layer:hover,
+.editor-library button:hover {
+  border-color: rgba(13, 153, 255, 0.3);
+  background: rgba(13, 153, 255, 0.1);
+  color: var(--text-main);
+}
+
+.editor-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.editor-field,
+.editor-field--full {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.editor-field--full {
+  grid-column: 1 / -1;
+}
+
+.editor-field label,
+.editor-field--full label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.editor-field input,
+.editor-field select,
+.editor-field textarea,
+.editor-field--full input,
+.editor-field--full select,
+.editor-field--full textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+}
+
+.editor-field textarea,
+.editor-field--full textarea {
+  min-height: 92px;
+  resize: vertical;
+}
+
+.editor-empty {
+  padding: 28px 18px;
+  text-align: center;
+  border-radius: 22px;
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+}
+
+.editor-footer-note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}

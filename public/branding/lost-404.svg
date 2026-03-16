@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#08111f" />
+      <stop offset="100%" stop-color="#10263a" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#0d99ff" />
+      <stop offset="100%" stop-color="#6affd7" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)" />
+  <circle cx="150" cy="120" r="80" fill="#0d99ff" opacity="0.08" />
+  <circle cx="680" cy="140" r="100" fill="#6affd7" opacity="0.08" />
+  <text x="400" y="250" text-anchor="middle" font-family="Inter, sans-serif" font-size="140" font-weight="800" fill="url(#accent)">404</text>
+  <rect x="190" y="300" width="420" height="150" rx="26" fill="#0d1828" stroke="#2c5675" />
+  <path d="M290 375h220" stroke="#7fc4ff" stroke-width="12" stroke-linecap="round" />
+  <path d="M330 345l-40 30 40 30" stroke="#6affd7" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M470 345l40 30-40 30" stroke="#0d99ff" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="400" y="510" text-anchor="middle" font-family="Inter, sans-serif" font-size="30" fill="#d7ebff">This route wandered off the map.</text>
+</svg>

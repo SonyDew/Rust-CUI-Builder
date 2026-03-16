@@ -1,6 +1,6 @@
 # Rust CUI Builder
 
-> Archive recovery snapshot of a proprietary React + Supabase platform for designing Rust game-server CUI interfaces, managing projects, and exporting encrypted `.rcui` bundles.
+> Recovered and runnable React + Vite app rebuilt from an archived Rust CUI Builder snapshot.
 
 ![Status](https://img.shields.io/badge/status-archive_recovery-orange)
 ![License](https://img.shields.io/badge/license-proprietary-red)
@@ -8,12 +8,11 @@
 ![Backend](https://img.shields.io/badge/backend-Supabase%20%2B%20custom%20API-3ecf8e)
 
 > [!IMPORTANT]
-> This repository currently contains an extracted RAR snapshot, not a full production checkout.
-> The code inside `extracted/rustcuitoolbeta/` mixes a partial `src/` tree with prebuilt browser assets, and several files required for a clean local rebuild are missing.
+> The original archive is still preserved under `extracted/`, but the working application now lives in the repository root as a recovery build. Some cloud features still depend on Supabase and companion API routes.
 
 ## Overview
 
-Rust CUI Builder is a commercial product aimed at Rust server and plugin developers who want to build game UI layouts visually instead of hand-authoring every screen. The recovered snapshot shows a feature-rich client that combines:
+Rust CUI Builder is a commercial product aimed at Rust server and plugin developers who want to build game UI layouts visually instead of hand-authoring every screen. The recovered app in this repository now includes:
 
 - visual project management and previews
 - Supabase-backed auth, storage, realtime, and collaboration
@@ -22,20 +21,40 @@ Rust CUI Builder is a commercial product aimed at Rust server and plugin develop
 - offline/PWA behavior with a service worker
 - encrypted `.rcui` export and import flows
 - Windows desktop integration hooks alongside the web app
+- a rebuilt recovery editor route that is usable locally
+
+## Quick Start
+
+```bash
+npm install
+npm run dev
+```
+
+Production build:
+
+```bash
+npm run build
+```
+
+Optional environment variables:
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+- `VITE_ENABLE_CLIENT_SECURITY=false` for local development if you want to force-disable the anti-devtools client code in production-like builds
 
 ## Snapshot Status
 
-| Area | Status in this snapshot |
+| Area | Status now |
 | --- | --- |
-| Authentication and onboarding | Recovered source |
-| Dashboard, favorites, tags, trash, previews | Recovered source |
-| Notifications and support tickets | Recovered source |
-| Plans, billing UI, and Stripe handoff | Recovered source |
-| Offline queue and service worker | Recovered source |
-| Desktop app hooks | Recovered source |
-| Visual editor | Referenced, but source file is missing |
-| Admin, share, legal, and desktop callback routes | Referenced, but source files are missing |
-| Clean local rebuild | Blocked by missing package/build files |
+| Authentication and onboarding | Working recovery build |
+| Dashboard, favorites, tags, trash, previews | Working recovery build |
+| Notifications and support tickets | Working recovery build |
+| Plans, billing UI, and Stripe handoff | UI restored, backend still required |
+| Offline queue and service worker | Working recovery build |
+| Desktop app hooks | Route restored |
+| Visual editor | Rebuilt recovery editor |
+| Admin, share, legal, and desktop callback routes | Restored |
+| Local Vite build | Working |
 
 ## Architecture
 
@@ -51,20 +70,15 @@ flowchart LR
 
 ```text
 Rust-CUI-Builder/
+|- src/                 # working recovery app
+|- public/              # rebuilt local branding + PWA assets
+|- assets/              # recovered archived bundles and CSS
+|- extracted/           # untouched archive snapshot
 |- README.md
 |- LICENSE
 |- CHANGELOG.md
-|- .env.example
-|- docs/
-|  \- PROJECT_AUDIT.md
-|- rustcuitoolbeta.rar
-\- extracted/
-   \- rustcuitoolbeta/
-      |- assets/
-      |- src/
-      |- index.html
-      |- manifest.json
-      \- sw.js
+|- package.json
+\- vite.config.js
 ```
 
 ## Key Product Capabilities Recovered
@@ -79,19 +93,18 @@ Rust-CUI-Builder/
 
 ## What Is Missing
 
-This archive is useful, but it is not a clean source repository yet. The biggest gaps are:
+This project is now runnable, but it is still a recovery build. The biggest remaining gaps are:
 
-- no `package.json`, lockfile, or Vite build configuration
-- missing route modules such as `Editor.jsx`, `AdminDashboard.jsx`, `AdminRoute.jsx`, `ShareView.jsx`, `LegalPage.jsx`, and `DesktopAuthCallback.jsx`
-- missing stylesheets such as `App.css`, `index.css`, `Auth.css`, `Dashboard.css`, `SettingsModal.css`, `Skeleton.css`, `Tickets.css`, and more
-- `manifest.json` is not a valid web manifest in this snapshot; it is a captured Cloudflare challenge page
-- companion backend endpoints and secrets are not included in this repository
+- the root app is reconstructed from an incomplete snapshot, so some behaviors are approximation rather than byte-for-byte recovery
+- Stripe, security logging, and encrypted `.rcui` APIs still require backend routes
+- Supabase-backed features still need real credentials and matching tables/policies
+- the original archive inside `extracted/` still contains broken historical files such as the captured Cloudflare `manifest.json`
 
 For a fuller breakdown, see [docs/PROJECT_AUDIT.md](docs/PROJECT_AUDIT.md).
 
 ## Environment and Companion Services
 
-The recovered client expects the following pieces around it:
+The rebuilt client expects the following pieces around it for full cloud functionality:
 
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
@@ -100,7 +113,7 @@ The recovered client expects the following pieces around it:
 - API routes for `/api/stripe/create-checkout`, `/api/stripe/subscription/:id`, and `/api/stripe/portal`
 - server-side encryption material for `.rcui` handling
 
-An `.env.example` file is included for the client-side values that appear in source.
+An `.env.example` file is included for the client-side values that appear in source. Without them, the app still runs in local recovery mode and stores editor state locally where possible.
 
 ## Changelog
 

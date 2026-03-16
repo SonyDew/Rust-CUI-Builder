@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <defs>
+    <linearGradient id="brand" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#0d99ff" />
+      <stop offset="55%" stop-color="#36d2ff" />
+      <stop offset="100%" stop-color="#7cffd4" />
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" rx="36" fill="#08111f" />
+  <rect x="14" y="14" width="132" height="132" rx="30" fill="url(#brand)" opacity="0.15" />
+  <path
+    d="M48 42h36c19 0 32 11 32 28 0 13-7 22-18 26l23 26H100L81 101H66v21H48V42zm18 15v28h17c10 0 16-5 16-14 0-9-6-14-17-14H66z"
+    fill="#f3fbff"
+  />
+</svg>

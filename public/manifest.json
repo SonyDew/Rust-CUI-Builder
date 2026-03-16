@@ -1,0 +1,17 @@
+{
+  "name": "Rust CUI Builder",
+  "short_name": "RCUI Builder",
+  "description": "Visual editor for Rust game plugin interfaces.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08111f",
+  "theme_color": "#0d99ff",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
