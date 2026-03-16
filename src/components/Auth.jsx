@@ -251,7 +251,7 @@ const Auth = () => {
                         </div>
                     </div>
                     <div className="showcase-footer">
-                        <p>© 2026 SonyDev. All rights reserved.</p>
+                        <p>© 2026 SonyDev.</p>
 
                     </div>
                 </div>
@@ -421,7 +421,7 @@ const Auth = () => {
                                     style={{marginTop: '4px', cursor: 'pointer', width: 'auto'}}
                                 />
                                 <label htmlFor="terms-check" style={{fontSize: '0.85rem', color: '#ccc', cursor: 'pointer', lineHeight: '1.4'}}>
-                                    I agree to the strict <button type="button" style={{color: '#0d99ff', textDecoration: 'underline', background: 'none', border: 'none', padding: 0, cursor: 'pointer', font: 'inherit'}} onClick={(e) => {e.preventDefault(); setShowLegalModal(true)}}>Terms of Service and License Agreement</button>. I acknowledge this is proprietary software.
+                                    I agree to the <button type="button" style={{color: '#0d99ff', textDecoration: 'underline', background: 'none', border: 'none', padding: 0, cursor: 'pointer', font: 'inherit'}} onClick={(e) => {e.preventDefault(); setShowLegalModal(true)}}>Terms of Service and open-source license notice</button>.
                                 </label>
                             </div>
                         )}

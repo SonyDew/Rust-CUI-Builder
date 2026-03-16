@@ -13,53 +13,53 @@ const LegalModal = ({ onClose, initialTab = 'tos' }) => {
                         <h3>Terms of Service</h3>
                         <div className="warning-box">
                             <AlertTriangle size={20} style={{ float: 'left', marginRight: '10px' }} />
-                            <strong>STRICTLY ENFORCED:</strong> Any attempt to clone, reverse engineer, or steal features from this software will result in immediate termination and legal action.
+                            <strong>Open-source notice:</strong> This repository is licensed under Apache-2.0. Keep copyright, license, and NOTICE attributions intact when redistributing it.
                         </div>
 
                         <h4>1. Acceptance of Terms</h4>
-                        <p>By using Rust CUI Builder, you agree to these strict Terms. If you do not agree, strictly do not use this Service.</p>
+                        <p>By using Rust CUI Builder, you agree to these Terms of Service and to comply with the repository license when using or redistributing the code.</p>
 
                         <h4>2. Intellectual Property Rights</h4>
-                        <p>All source code, UI designs, UX flows, and features are the exclusive property of SonyDev.</p>
+                        <p>The source code is available under Apache-2.0. SonyDev remains the original publisher, and attribution notices should be preserved.</p>
                         <p><strong>YOU MAY NOT:</strong></p>
                         <ul>
-                            <li>Copy the specific look and feel of the interface.</li>
-                            <li>Redistribute the code generated for checking or competing purposes.</li>
-                            <li>Use any automated tools to scrape or clone the Service.</li>
-                            <li>Reverse engineer the WebAssembly or JavaScript bundles.</li>
+                            <li>Remove copyright, license, or NOTICE attributions.</li>
+                            <li>Misrepresent your fork as the official SonyDev release.</li>
+                            <li>Use the platform to abuse collaboration, billing, or support features.</li>
+                            <li>Use SonyDev or Rust CUI Builder branding in a misleading way.</li>
                         </ul>
 
                         <h4>3. User Conduct</h4>
-                        <p>You agree to use this tool solely for its intended purpose of building interfaces. Using this tool to analyze its own construction for replication is strictly prohibited.</p>
+                        <p>Use the tool lawfully and in good faith. Respect other users, configured services, and third-party license terms tied to project dependencies.</p>
                     </div>
                 );
             case 'privacy':
                 return (
                     <div className="legal-text">
                         <h3>Privacy Policy</h3>
-                        <p>We take your privacy—and our intellectual property—seriously.</p>
+                        <p>We keep the privacy model simple and tied to how the app is configured.</p>
 
                         <h4>Data Usage</h4>
-                        <p>We collect minimal usage data to ensure system stability and to strictly monitor for suspicious activity, such as cloning bots or unauthorized scraping.</p>
+                        <p>When backend services are configured, the app may store account, project, notification, and support data needed to operate those features. In local mode, most state stays in the browser.</p>
 
                         <h4>Project Security</h4>
-                        <p>Your projects are private. However, the <em>structure</em> of your projects must not be used to reverse-engineer our builder logic.</p>
+                        <p>Your project data should be treated according to the storage mode you use. Local mode keeps data in the browser; connected mode depends on your Supabase and API deployment settings.</p>
                     </div>
                 );
             case 'license':
                 return (
                     <div className="legal-text">
-                        <h3>Proprietary License</h3>
+                        <h3>Apache License 2.0</h3>
                         <p><strong>Copyright (c) 2026 SonyDev.</strong></p>
-                        <p><strong>Status: PROPRIETARY & CONFIDENTIAL</strong></p>
+                        <p><strong>Status: OPEN SOURCE</strong></p>
 
-                        <p>This is NOT open source software. It is a closed-source, proprietary tool.</p>
+                        <p>This repository is open source under the Apache License, Version 2.0.</p>
 
-                        <h4>Grant of License</h4>
-                        <p>You are granted a revocable, non-exclusive, non-transferable license to use the portions of the software expressly made available to you via the web interface.</p>
+                        <h4>Distribution</h4>
+                        <p>You may use, modify, and redistribute the code under Apache-2.0, provided that you keep the required license and attribution notices.</p>
 
-                        <h4>No Right to Source</h4>
-                        <p>You have no right to view, modify, or distribute the source code of this application.</p>
+                        <h4>Attribution and Branding</h4>
+                        <p>See the repository root <code>LICENSE</code> and <code>NOTICE</code> files. SonyDev attribution should stay intact, and product names or branding are not granted as trademarks beyond what Apache-2.0 allows.</p>
                     </div>
                 );
             default:

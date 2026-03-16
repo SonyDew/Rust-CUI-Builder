@@ -152,5 +152,5 @@ If you want to keep building the project, start here:
 
 ## License
 
-This repository is not open source. See [LICENSE](./LICENSE)
-before copying, redistributing, or contributing to the codebase.
+This repository is open source under [Apache-2.0](./LICENSE).
+See [NOTICE](./NOTICE) for attribution and branding notices tied to SonyDev.

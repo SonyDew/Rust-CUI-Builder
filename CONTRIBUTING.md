@@ -1,7 +1,8 @@
 # Contributing
 
-Rust CUI Builder is a proprietary repository. Only contributors who have been
-authorized by the owner should work in this codebase or submit changes.
+Rust CUI Builder is an open-source repository maintained by SonyDev.
+Contributions are welcome. By submitting changes, you agree that your
+contribution may be distributed under the repository license.
 
 ## Prerequisites
 

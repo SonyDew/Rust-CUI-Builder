@@ -39,9 +39,11 @@ const sections = {
         icon: Lock,
         body: (
             <>
-                <p>This repository currently ships with a proprietary license file at the project root. Review that file before redistribution, resale, or external reuse.</p>
+                <p>This repository is published under the Apache License 2.0. Review the root <code>LICENSE</code> file before redistributing modified versions.</p>
                 <h3>Repository license</h3>
-                <p>The root <code>LICENSE</code> defines current repository terms. If ownership or publication strategy changes, update that file before wider distribution.</p>
+                <p>The root <code>LICENSE</code> file contains the full Apache-2.0 terms, and the root <code>NOTICE</code> file preserves SonyDev attribution and branding notices.</p>
+                <h3>Branding</h3>
+                <p>The source code is open source, but names, logos, and branding remain subject to Apache-2.0 trademark limits. Keep attribution intact and do not present forks as the official SonyDev release.</p>
                 <h3>Third-party software</h3>
                 <p>Dependencies such as React, Vite, Supabase, and Lucide remain governed by their own licenses.</p>
             </>
