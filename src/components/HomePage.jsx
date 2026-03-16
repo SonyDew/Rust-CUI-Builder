@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Layers, Code, Zap, ArrowRight } from 'lucide-react';
+import { isLocalMode } from '../supabaseClient';
 import { BRAND_ASSETS } from '../utils/brandAssets';
 import './Auth.css';
 
@@ -65,6 +66,22 @@ const HomePage = () => {
                         <p className="home-subtitle">
                             The fastest way to design and export CUI interfaces for your Rust game server plugins.
                         </p>
+
+                        {isLocalMode && (
+                            <div style={{
+                                marginBottom: '18px',
+                                padding: '14px 16px',
+                                borderRadius: '14px',
+                                border: '1px solid rgba(13, 153, 255, 0.28)',
+                                background: 'rgba(13, 153, 255, 0.08)',
+                                color: '#d7ecff',
+                                textAlign: 'left',
+                                fontSize: '0.92rem',
+                                lineHeight: 1.45,
+                            }}>
+                                Local mode is active. You can sign up, edit projects, export files, and test support flows without configuring Supabase.
+                            </div>
+                        )}
 
                         <div className="home-features">
                             <div className="home-feature-pill"><Layers size={14} /> Drag & Drop</div>

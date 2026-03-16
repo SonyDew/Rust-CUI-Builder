@@ -13,16 +13,16 @@ const StatusTracker = () => {
         const channel = supabase.channel('global_status');
 
         const trackStatus = async () => {
-            const status = {
+            const statusPayload = {
                 user_id: user.id,
                 email: user.email,
                 online_at: new Date().toISOString(),
                 location: location.pathname
             };
 
-            await channel.subscribe(async (status) => {
-                if (status === 'SUBSCRIBED') {
-                    await channel.track(status);
+            await channel.subscribe(async (subscriptionStatus) => {
+                if (subscriptionStatus === 'SUBSCRIBED') {
+                    await channel.track(statusPayload);
                 }
             });
         };

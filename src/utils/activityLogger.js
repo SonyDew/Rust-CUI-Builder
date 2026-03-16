@@ -1,5 +1,8 @@
 
+import { isLocalMode } from '../supabaseClient';
+
 export const logActivity = async (type, details, userEmail = null, level = 'INFO') => {
+    if (isLocalMode) return;
     try {
         await fetch('/api/security/event', {
             method: 'POST',

@@ -4,6 +4,7 @@ import { Check, X, ArrowLeft, Zap, Users, Crown, Sparkles, Loader2, ExternalLink
 import { useAuth } from '../context/AuthContext';
 import { usePlan } from '../context/PlanContext';
 import { useToast } from '../context/ToastContext';
+import { isLocalMode } from '../supabaseClient';
 import { BRAND_ASSETS } from '../utils/brandAssets';
 import './PlansPage.css';
 
@@ -83,6 +84,10 @@ const PlansPage = () => {
             return;
         }
         if (planId === 'free' || planId === currentPlan) return;
+        if (isLocalMode) {
+            showToast('Billing is disabled in local mode. Configure the Stripe backend to enable plan changes.', 'info');
+            return;
+        }
 
         setLoadingPlan(planId);
         try {
@@ -114,6 +119,10 @@ const PlansPage = () => {
     };
 
     const handleManageSubscription = async () => {
+        if (isLocalMode) {
+            showToast('Subscription management is unavailable in local mode.', 'info');
+            return;
+        }
         try {
             const res = await fetch(`/api/stripe/subscription/${user.id}`, {
                 headers: { 'Authorization': `Bearer ${session?.access_token}` },
@@ -141,12 +150,14 @@ const PlansPage = () => {
     const getCtaText = (planId) => {
         if (planLoading) return '...';
         if (planId === currentPlan) return 'Current Plan';
+        if (isLocalMode) return 'Cloud Billing';
         if (planId === 'free') return currentPlan === 'free' ? 'Current Plan' : 'Downgrade';
         if (currentPlan !== 'free' && planId !== currentPlan) return 'Switch Plan';
         return 'Upgrade';
     };
 
     const isDisabled = (planId) => {
+        if (isLocalMode) return planId !== currentPlan;
         return planId === currentPlan || planId === 'free';
     };
 
@@ -183,6 +194,21 @@ const PlansPage = () => {
                     </button>
                 </div>
             </div>
+
+            {isLocalMode && (
+                <div style={{
+                    maxWidth: '1120px',
+                    margin: '0 auto 24px',
+                    padding: '14px 16px',
+                    borderRadius: '14px',
+                    border: '1px solid rgba(13, 153, 255, 0.24)',
+                    background: 'rgba(13, 153, 255, 0.08)',
+                    color: '#d7ecff',
+                    lineHeight: 1.45,
+                }}>
+                    Local mode unlocks the app for development and testing. Billing, checkout, and customer portal actions stay disabled until the Stripe API routes are wired up.
+                </div>
+            )}
 
             <div className="plans-grid">
                 {plans.map((plan, index) => {
@@ -254,7 +280,7 @@ const PlansPage = () => {
                 })}
             </div>
 
-            {currentPlan !== 'free' && (
+            {!isLocalMode && currentPlan !== 'free' && (
                 <div style={{ textAlign: 'center', marginTop: '16px' }}>
                     <button
                         onClick={handleManageSubscription}

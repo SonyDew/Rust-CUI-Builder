@@ -5,33 +5,37 @@ Last updated: 2026-03-16
 ## Summary
 
 The repository is a working frontend for Rust CUI Builder. It can be started,
-built, and navigated locally. The main remaining work is backend integration,
-schema documentation, and production hardening.
+built, and used locally without Supabase thanks to a browser-persisted local
+mode. The main remaining work is backend integration, schema documentation, and
+production hardening.
 
 ## Working Today
 
 - React/Vite application shell
+- standalone local mode for auth, projects, notifications, tickets, storage,
+  and realtime-style UI flows
 - auth screens and onboarding flow
 - dashboard with project browsing, tags, favorites, drafts, and trash
-- editor route with local draft fallback
+- editor route with local save fallback
 - support tickets UI and realtime client hooks
-- plans page and billing handoff UI
+- plans page with backend-aware billing behavior
 - share, legal, admin, and desktop callback routes
 - service worker and PWA assets
 
 ## Known Gaps
 
-- no backend implementation for Stripe, RCUI encryption, or security logging
+- no production backend implementation for Stripe, RCUI encryption, or
+  security logging
 - no committed Supabase schema or RLS policies
 - no automated test coverage
 - desktop application packaging is not part of this repository
 
 ## Highest-Priority Next Steps
 
-1. Define and document the backend contract clearly enough that another
-   developer can stand up a matching API without reading the whole frontend.
-2. Commit the Supabase schema used by the app, especially plans, profiles,
+1. Commit the Supabase schema used by the app, especially plans, profiles,
    notifications, tickets, and project storage.
+2. Define and document the backend contract clearly enough that another
+   developer can stand up a matching API without reading the whole frontend.
 3. Add smoke tests for the main user journeys:
    auth, dashboard, editor, export/import, and support tickets.
 4. Review editor save behavior and cloud/local fallback paths for edge cases.

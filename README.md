@@ -49,8 +49,11 @@ and fill in the values you have:
 - `VITE_ENABLE_CLIENT_SECURITY=false` for local debugging if you need to bypass
   the browser-side security overlay
 
-Without Supabase credentials the app still starts, but cloud-backed features
-such as auth, notifications, sync, and billing cannot work.
+Without Supabase credentials the app now falls back to a built-in local mode.
+In local mode you can sign in, create projects, complete onboarding, use the
+editor, export/import `.rcui` files, browse notifications, and test support
+tickets entirely in the browser. Stripe billing and production cloud sync still
+require the real backend.
 
 ## Project Layout
 
@@ -72,11 +75,12 @@ Rust-CUI-Builder/
 
 Working in the frontend today:
 
+- standalone local mode with browser-persisted auth and data
 - auth and onboarding UI
 - dashboard navigation and project management views
-- editor with local draft fallback
+- editor with local save/sync fallback
 - support ticket screens and realtime hooks
-- plans page and Stripe handoff UI
+- plans page with local-mode billing guardrails
 - share, legal, admin, and desktop callback routes
 
 Still missing or external:

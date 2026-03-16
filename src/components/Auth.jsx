@@ -6,6 +6,7 @@ import { BRAND_ASSETS } from '../utils/brandAssets';
 import ConfirmModal from './ConfirmModal';
 import LegalModal from './LegalModal';
 import { Lock, Mail, ArrowRight, Loader2, Code, Layers, Zap, RefreshCw, ShieldCheck, Unlock, Check, FileText } from 'lucide-react';
+import { isLocalMode } from '../supabaseClient';
 import './Auth.css';
 
 const Auth = () => {
@@ -291,6 +292,21 @@ const Auth = () => {
                                 <span>OR</span>
                             </div>
                         </>
+                    )}
+
+                    {isLocalMode && (
+                        <div style={{
+                            marginBottom: '16px',
+                            padding: '12px 14px',
+                            borderRadius: '12px',
+                            border: '1px solid rgba(13, 153, 255, 0.25)',
+                            background: 'rgba(13, 153, 255, 0.08)',
+                            color: '#d7ecff',
+                            fontSize: '0.88rem',
+                            lineHeight: 1.45,
+                        }}>
+                            Local mode is active. Accounts, projects, notifications, and support data stay in this browser until a real Supabase backend is configured.
+                        </div>
                     )}
 
                     {error && <div className="auth-error">{error}</div>}
