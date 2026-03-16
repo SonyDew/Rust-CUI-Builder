@@ -14,6 +14,8 @@ production hardening.
 - React/Vite application shell
 - standalone local mode for auth, projects, notifications, tickets, storage,
   and realtime-style UI flows
+- committed Supabase schema migration with auth bootstrap, RLS, storage, and
+  realtime table wiring
 - auth screens and onboarding flow
 - dashboard with project browsing, tags, favorites, drafts, and trash
 - editor route with local save fallback
@@ -26,16 +28,15 @@ production hardening.
 
 - no production backend implementation for Stripe, RCUI encryption, or
   security logging
-- no committed Supabase schema or RLS policies
 - no automated test coverage
 - desktop application packaging is not part of this repository
 
 ## Highest-Priority Next Steps
 
-1. Commit the Supabase schema used by the app, especially plans, profiles,
-   notifications, tickets, and project storage.
-2. Define and document the backend contract clearly enough that another
+1. Define and document the backend contract clearly enough that another
    developer can stand up a matching API without reading the whole frontend.
+2. Apply and validate the committed Supabase schema against a real project,
+   then test auth, invites, storage, and realtime end to end.
 3. Add smoke tests for the main user journeys:
    auth, dashboard, editor, export/import, and support tickets.
 4. Review editor save behavior and cloud/local fallback paths for edge cases.

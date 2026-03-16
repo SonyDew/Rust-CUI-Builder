@@ -76,6 +76,7 @@ Rust-CUI-Builder/
 Working in the frontend today:
 
 - standalone local mode with browser-persisted auth and data
+- committed Supabase schema migration with auth bootstrap, RLS, storage, and realtime wiring
 - auth and onboarding UI
 - dashboard navigation and project management views
 - editor with local save/sync fallback
@@ -97,6 +98,7 @@ If you want to keep building the project, start here:
 - [CONTRIBUTING.md](./CONTRIBUTING.md)
 - [docs/PROJECT_STATUS.md](./docs/PROJECT_STATUS.md)
 - [docs/BACKEND_REQUIREMENTS.md](./docs/BACKEND_REQUIREMENTS.md)
+- [docs/SUPABASE_SETUP.md](./docs/SUPABASE_SETUP.md)
 - [CHANGELOG.md](./CHANGELOG.md)
 
 ## License

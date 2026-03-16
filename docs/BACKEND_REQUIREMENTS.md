@@ -3,6 +3,10 @@
 This document lists the backend and Supabase pieces the current frontend
 expects, based on the code in `src/`.
 
+The Supabase side of this contract is now implemented in
+`supabase/migrations/20260316_000001_core_schema.sql`.
+For setup steps, use [SUPABASE_SETUP.md](./SUPABASE_SETUP.md).
+
 ## Supabase Auth
 
 The app uses Supabase Auth for:
@@ -144,4 +148,5 @@ Without backend support:
 - editor saves can fall back to local browser storage
 - RCUI export/import falls back to plain JSON content if encryption endpoints
   are unavailable
-- auth, notifications, plans, and realtime features will not be fully usable
+- the app can still run in local mode for auth, projects, notifications,
+  tickets, and browser-persisted data
