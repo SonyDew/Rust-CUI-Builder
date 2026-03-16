@@ -16,6 +16,7 @@ const LOCAL_DRAFT_PREFIX = 'rcui-local-project:';
 const ALIGN_OPTIONS = ['UpperLeft', 'UpperCenter', 'UpperRight', 'MiddleLeft', 'MiddleCenter', 'MiddleRight', 'LowerLeft', 'LowerCenter', 'LowerRight'];
 const FONT_OPTIONS = ['RobotoCondensed-Regular.ttf', 'RobotoCondensed-Bold.ttf', 'PermanentMarker.ttf', 'DroidSansMono.ttf'];
 const DEFAULT_SETTINGS = { uiName: 'MyCustomUI', layer: 'Overlay', chatCommand: '', consoleCommand: '', permission: '', backgroundUrl: DEFAULT_PROJECT_BACKGROUND };
+const PREVIEW_BASE_WIDTH = 1920;
 const PRESETS = {
   Panel: { color: '0.10 0.16 0.22 0.92', opacity: 100, anchor: { min: '0.32 0.30', max: '0.68 0.66' }, offset: { minX: 0, minY: 0, maxX: 0, maxY: 0 }, rotation: 0, align: 'MiddleCenter' },
   Text: { text: 'Header text', color: '#f5fbff', opacity: 100, font: 'RobotoCondensed-Bold.ttf', fontSize: 34, anchor: { min: '0.38 0.54', max: '0.62 0.60' }, offset: { minX: 0, minY: 0, maxX: 0, maxY: 0 }, rotation: 0, align: 'MiddleCenter' },
@@ -66,6 +67,7 @@ const Editor = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const deferredLayerSearch = useDeferredValue(layerSearch);
   const skipAutosaveRef = useRef(true);
+  const dragStateRef = useRef(null);
   const selectedElement = elements.find((element) => element.id === selectedId) || null;
   const visibleLayers = flattenElements(elements).filter(({ element }) => `${element.type} ${element.text || ''}`.toLowerCase().includes(deferredLayerSearch.toLowerCase()));
 
@@ -126,6 +128,55 @@ const Editor = () => {
     });
     return unsubscribe;
   }, [showToast]);
+
+  useEffect(() => {
+    const handlePointerMove = (event) => {
+      const dragState = dragStateRef.current;
+      if (!dragState) return;
+
+      const previewScale = previewWidth / PREVIEW_BASE_WIDTH;
+      if (!previewScale) return;
+
+      const deltaX = (event.clientX - dragState.lastClientX) / previewScale;
+      const deltaY = (event.clientY - dragState.lastClientY) / previewScale;
+      if (!deltaX && !deltaY) return;
+
+      dragStateRef.current = {
+        ...dragState,
+        lastClientX: event.clientX,
+        lastClientY: event.clientY,
+      };
+
+      setElements((previous) => previous.map((element) => {
+        if (element.id !== dragState.elementId) return element;
+        const offset = element.offset || {};
+        return {
+          ...element,
+          offset: {
+            ...offset,
+            minX: toNumber(offset.minX, 0) + deltaX,
+            maxX: toNumber(offset.maxX, 0) + deltaX,
+            minY: toNumber(offset.minY, 0) - deltaY,
+            maxY: toNumber(offset.maxY, 0) - deltaY,
+          },
+        };
+      }));
+    };
+
+    const stopDragging = () => {
+      dragStateRef.current = null;
+    };
+
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', stopDragging);
+    window.addEventListener('pointercancel', stopDragging);
+
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', stopDragging);
+      window.removeEventListener('pointercancel', stopDragging);
+    };
+  }, [previewWidth]);
 
   const buildPayload = () => ({ name: projectName?.trim() || 'Untitled', elements, settings: { ...DEFAULT_SETTINGS, ...settings }, last_modified: new Date().toISOString() });
   const saveRemotePayload = async (targetProjectId, payload) => {
@@ -205,6 +256,20 @@ const Editor = () => {
   });
   const updateOffsetValue = (key, value) => patchSelected((element) => ({ ...element, offset: { ...element.offset, [key]: toNumber(value, element.offset?.[key] || 0) } }));
   const saveLabel = saveState === 'saving' ? 'Saving...' : saveState === 'queued' ? 'Queued offline' : saveState === 'local' ? 'Local draft' : saveState === 'dirty' ? 'Unsaved changes' : lastSavedAt ? `Saved ${new Date(lastSavedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : 'Saved';
+  const handlePreviewPointerDown = (element, event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setSelectedId(element.id);
+    dragStateRef.current = {
+      elementId: element.id,
+      lastClientX: event.clientX,
+      lastClientY: event.clientY,
+    };
+  };
+  const handleCanvasPointerDown = () => {
+    dragStateRef.current = null;
+    setSelectedId(null);
+  };
   const exportProject = { name: projectName?.trim() || 'Untitled', elements, settings: { ...DEFAULT_SETTINGS, ...settings } };
   const handleExportRcui = async () => {
     try {
@@ -295,7 +360,13 @@ const Editor = () => {
                 <div className="editor-toolbar-group"><span className="editor-footer-note">{previewWidth}px</span><input type="range" min="620" max="1080" step="20" value={previewWidth} onChange={(event) => setPreviewWidth(toNumber(event.target.value, 920))} /></div>
               </div>
             </div>
-            <ProjectPreview project={{ name: projectName, elements, settings }} width={previewWidth} />
+            <ProjectPreview
+              project={{ name: projectName, elements, settings }}
+              width={previewWidth}
+              selectedId={selectedId}
+              onElementPointerDown={handlePreviewPointerDown}
+              onCanvasPointerDown={handleCanvasPointerDown}
+            />
           </div>
         </div>
       </main>

@@ -43,7 +43,7 @@ const parseAnchor = (anchorStr) => {
     return { x: parseFloat(parts[0]), y: parseFloat(parts[1]) };
 };
 
-const ProjectPreview = ({ project, width = 300 }) => {
+const ProjectPreview = ({ project, width = 300, selectedId = null, onElementPointerDown, onCanvasPointerDown }) => {
     const elements = project.elements || [];
     const settings = project.settings || {};
 
@@ -57,6 +57,7 @@ const ProjectPreview = ({ project, width = 300 }) => {
         const anchorMin = parseAnchor(el.anchor.min);
         const anchorMax = parseAnchor(el.anchor.max);
         const offset = el.offset;
+        const isSelected = el.id === selectedId;
 
         const bgColor = (el.type === 'Panel' || el.type === 'Button' || el.type === 'InputField' || el.type === 'ScrollView') ? getCssColor(el.color, el.opacity) : 'transparent';
         const txtColor = (el.type === 'Button' || el.type === 'InputField') ? (el.textColor || 'white') : (el.type === 'Text' ? getCssColor(el.color, el.opacity) : 'white');
@@ -141,48 +142,23 @@ const ProjectPreview = ({ project, width = 300 }) => {
             border: 'none',
             boxSizing: 'border-box',
             textShadow,
-            boxShadow
+            boxShadow: isSelected
+                ? `0 0 0 2px rgba(13, 153, 255, 0.95), 0 0 0 6px rgba(13, 153, 255, 0.18)${boxShadow !== 'none' ? `, ${boxShadow}` : ''}`
+                : boxShadow,
+            cursor: onElementPointerDown ? 'grab' : 'default',
+            userSelect: 'none',
+            touchAction: 'none',
         };
     };
-
-
-    const renderElement = (el) => {
-        return (
-            <div key={el.id} style={getStyle(el)}>
-                {el.type === 'Text' && el.text}
-                {el.type === 'Button' && (el.text || 'Button')}
-                {el.type === 'InputField' && (
-                    <div style={{ width: '100%', height: '100%', padding: '5px', overflow: 'hidden' }}>
-                        {el.text || 'Input...'}
-                    </div>
-                )}
-                {el.type === 'ItemIcon' && (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', background: 'rgba(0,0,0,0.2)' }}>
-                        <span style={{ fontSize: '24px' }}>📦</span>
-                    </div>
-                )}
-                {el.type === 'Countdown' && (
-                    <div style={{ width: '100%', height: '100%', background: '#444', position: 'relative' }}>
-                        <div style={{ width: '60%', height: '100%', background: '#888' }}></div>
-                        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
-                            {el.endTime - el.startTime}s
-                        </div>
-                    </div>
-                )}
-                {el.type === 'ScrollView' && (
-                    <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '10px', background: 'rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                        <div style={{ width: '4px', height: '20%', background: 'rgba(255,255,255,0.3)', borderRadius: '2px' }}></div>
-                    </div>
-                )}
-            </div>
-        );
-    };
-
 
     const renderRecursive = (el) => {
         const children = elements.filter(child => child.parent === el.id);
         return (
-            <div key={el.id} style={getStyle(el)}>
+            <div
+                key={el.id}
+                style={getStyle(el)}
+                onPointerDown={onElementPointerDown ? (event) => onElementPointerDown(el, event) : undefined}
+            >
                 {el.type === 'Text' && el.text}
                 {el.type === 'Button' && (el.text || 'Button')}
                 {el.type === 'InputField' && (el.text || 'Input...')}
@@ -198,7 +174,10 @@ const ProjectPreview = ({ project, width = 300 }) => {
     const rootElements = elements.filter(el => !el.parent || ['Hud', 'Overlay', 'Under'].includes(el.parent));
 
     return (
-        <div style={{ width: width, height: height, position: 'relative', overflow: 'hidden', background: '#1e1e1e', borderRadius: '4px' }}>
+        <div
+            style={{ width: width, height: height, position: 'relative', overflow: 'hidden', background: '#1e1e1e', borderRadius: '4px' }}
+            onPointerDown={onCanvasPointerDown}
+        >
              <div style={{
                  width: baseWidth,
                  height: baseHeight,
