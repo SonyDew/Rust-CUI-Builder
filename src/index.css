@@ -59,6 +59,26 @@ textarea {
   font: inherit;
 }
 
+select {
+  color-scheme: dark;
+}
+
+select option,
+select optgroup {
+  background: #0f1722;
+  color: #edf5ff;
+}
+
+[data-theme='light'] select {
+  color-scheme: light;
+}
+
+[data-theme='light'] select option,
+[data-theme='light'] select optgroup {
+  background: #ffffff;
+  color: #0d1a29;
+}
+
 button {
   color: inherit;
 }
