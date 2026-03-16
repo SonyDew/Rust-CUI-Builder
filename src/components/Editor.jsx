@@ -17,6 +17,7 @@ const ALIGN_OPTIONS = ['UpperLeft', 'UpperCenter', 'UpperRight', 'MiddleLeft', '
 const FONT_OPTIONS = ['RobotoCondensed-Regular.ttf', 'RobotoCondensed-Bold.ttf', 'PermanentMarker.ttf', 'DroidSansMono.ttf'];
 const DEFAULT_SETTINGS = { uiName: 'MyCustomUI', layer: 'Overlay', chatCommand: '', consoleCommand: '', permission: '', backgroundUrl: DEFAULT_PROJECT_BACKGROUND };
 const PREVIEW_BASE_WIDTH = 1920;
+const PREVIEW_BASE_HEIGHT = 1080;
 const PRESETS = {
   Panel: { color: '0.10 0.16 0.22 0.92', opacity: 100, anchor: { min: '0.32 0.30', max: '0.68 0.66' }, offset: { minX: 0, minY: 0, maxX: 0, maxY: 0 }, rotation: 0, align: 'MiddleCenter' },
   Text: { text: 'Header text', color: '#f5fbff', opacity: 100, font: 'RobotoCondensed-Bold.ttf', fontSize: 34, anchor: { min: '0.38 0.54', max: '0.62 0.60' }, offset: { minX: 0, minY: 0, maxX: 0, maxY: 0 }, rotation: 0, align: 'MiddleCenter' },
@@ -31,8 +32,15 @@ const parseAnchor = (value = '0 0') => {
   const [x = 0, y = 0] = value.split(' ').map(Number);
   return { x: Number.isFinite(x) ? x : 0, y: Number.isFinite(y) ? y : 0 };
 };
-const formatAnchor = ({ x, y }) => `${x} ${y}`;
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+const roundTo = (value, digits = 2) => {
+  const factor = 10 ** digits;
+  return Math.round(value * factor) / factor;
+};
+const formatAnchor = ({ x, y }) => `${roundTo(x, 4)} ${roundTo(y, 4)}`;
 const toNumber = (value, fallback = 0) => Number.isFinite(Number(value)) ? Number(value) : fallback;
+const anchorToPercent = (value) => roundTo(value * 100, 1);
+const percentToAnchor = (value, fallback = 0) => clamp(toNumber(value, fallback) / 100, 0, 1);
 const createElement = (type) => ({ id: createId(), type, parent: 'Overlay', ...PRESETS[type] });
 const flattenElements = (elements, parent = null, depth = 0, visited = new Set()) => {
   const children = elements.filter((element) => parent === null ? !element.parent || ROOT_LAYERS.includes(element.parent) : element.parent === parent);
@@ -149,15 +157,23 @@ const Editor = () => {
 
       setElements((previous) => previous.map((element) => {
         if (element.id !== dragState.elementId) return element;
+        const anchorMin = parseAnchor(element.anchor?.min);
+        const anchorMax = parseAnchor(element.anchor?.max);
         const offset = element.offset || {};
+        const currentLeft = anchorMin.x * PREVIEW_BASE_WIDTH + toNumber(offset.minX, 0);
+        const currentRight = anchorMax.x * PREVIEW_BASE_WIDTH + toNumber(offset.maxX, 0);
+        const currentBottom = anchorMin.y * PREVIEW_BASE_HEIGHT + toNumber(offset.minY, 0);
+        const currentTop = anchorMax.y * PREVIEW_BASE_HEIGHT + toNumber(offset.maxY, 0);
+        const clampedDeltaX = clamp(deltaX, -currentLeft, PREVIEW_BASE_WIDTH - currentRight);
+        const clampedDeltaY = clamp(-deltaY, -currentBottom, PREVIEW_BASE_HEIGHT - currentTop);
         return {
           ...element,
           offset: {
             ...offset,
-            minX: toNumber(offset.minX, 0) + deltaX,
-            maxX: toNumber(offset.maxX, 0) + deltaX,
-            minY: toNumber(offset.minY, 0) - deltaY,
-            maxY: toNumber(offset.maxY, 0) - deltaY,
+            minX: roundTo(toNumber(offset.minX, 0) + clampedDeltaX),
+            maxX: roundTo(toNumber(offset.maxX, 0) + clampedDeltaX),
+            minY: roundTo(toNumber(offset.minY, 0) + clampedDeltaY),
+            maxY: roundTo(toNumber(offset.maxY, 0) + clampedDeltaY),
           },
         };
       }));
@@ -251,10 +267,15 @@ const Editor = () => {
   const patchSelected = (updater) => selectedElement && setElements((previous) => previous.map((element) => element.id === selectedElement.id ? updater(element) : element));
   const updateAnchorValue = (edge, axis, value) => patchSelected((element) => {
     const next = parseAnchor(element.anchor?.[edge]);
-    next[axis] = toNumber(value, next[axis]);
+    const oppositeEdge = edge === 'min' ? 'max' : 'min';
+    const opposite = parseAnchor(element.anchor?.[oppositeEdge]);
+    const normalized = percentToAnchor(value, next[axis] * 100);
+    next[axis] = edge === 'min'
+      ? Math.min(normalized, opposite[axis])
+      : Math.max(normalized, opposite[axis]);
     return { ...element, anchor: { ...element.anchor, [edge]: formatAnchor(next) } };
   });
-  const updateOffsetValue = (key, value) => patchSelected((element) => ({ ...element, offset: { ...element.offset, [key]: toNumber(value, element.offset?.[key] || 0) } }));
+  const updateOffsetValue = (key, value) => patchSelected((element) => ({ ...element, offset: { ...element.offset, [key]: roundTo(toNumber(value, element.offset?.[key] || 0)) } }));
   const saveLabel = saveState === 'saving' ? 'Saving...' : saveState === 'queued' ? 'Queued offline' : saveState === 'local' ? 'Local draft' : saveState === 'dirty' ? 'Unsaved changes' : lastSavedAt ? `Saved ${new Date(lastSavedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : 'Saved';
   const handlePreviewPointerDown = (element, event) => {
     event.preventDefault();
@@ -410,14 +431,17 @@ const Editor = () => {
                 <Field label="Char Limit"><input type="number" min="0" value={selectedElement.charsLimit || 0} onChange={(event) => patchSelected((element) => ({ ...element, charsLimit: Math.max(0, Math.round(toNumber(event.target.value, 0)) || 0) }))} /></Field>
               </>}
               {selectedElement.type === 'Image' && <Field label="Image URL" full><input value={selectedElement.imageUrl || ''} onChange={(event) => patchSelected((element) => ({ ...element, imageUrl: event.target.value }))} /></Field>}
-              <Field label="Anchor Min X"><input type="number" step="0.01" value={parseAnchor(selectedElement.anchor?.min).x} onChange={(event) => updateAnchorValue('min', 'x', event.target.value)} /></Field>
-              <Field label="Anchor Min Y"><input type="number" step="0.01" value={parseAnchor(selectedElement.anchor?.min).y} onChange={(event) => updateAnchorValue('min', 'y', event.target.value)} /></Field>
-              <Field label="Anchor Max X"><input type="number" step="0.01" value={parseAnchor(selectedElement.anchor?.max).x} onChange={(event) => updateAnchorValue('max', 'x', event.target.value)} /></Field>
-              <Field label="Anchor Max Y"><input type="number" step="0.01" value={parseAnchor(selectedElement.anchor?.max).y} onChange={(event) => updateAnchorValue('max', 'y', event.target.value)} /></Field>
-              <Field label="Offset Min X"><input type="number" value={selectedElement.offset?.minX || 0} onChange={(event) => updateOffsetValue('minX', event.target.value)} /></Field>
-              <Field label="Offset Min Y"><input type="number" value={selectedElement.offset?.minY || 0} onChange={(event) => updateOffsetValue('minY', event.target.value)} /></Field>
-              <Field label="Offset Max X"><input type="number" value={selectedElement.offset?.maxX || 0} onChange={(event) => updateOffsetValue('maxX', event.target.value)} /></Field>
-              <Field label="Offset Max Y"><input type="number" value={selectedElement.offset?.maxY || 0} onChange={(event) => updateOffsetValue('maxY', event.target.value)} /></Field>
+              <Field label="Anchor Min X (%)"><input type="number" min="0" max="100" step="0.1" value={anchorToPercent(parseAnchor(selectedElement.anchor?.min).x)} onChange={(event) => updateAnchorValue('min', 'x', event.target.value)} /></Field>
+              <Field label="Anchor Min Y (%)"><input type="number" min="0" max="100" step="0.1" value={anchorToPercent(parseAnchor(selectedElement.anchor?.min).y)} onChange={(event) => updateAnchorValue('min', 'y', event.target.value)} /></Field>
+              <Field label="Anchor Max X (%)"><input type="number" min="0" max="100" step="0.1" value={anchorToPercent(parseAnchor(selectedElement.anchor?.max).x)} onChange={(event) => updateAnchorValue('max', 'x', event.target.value)} /></Field>
+              <Field label="Anchor Max Y (%)"><input type="number" min="0" max="100" step="0.1" value={anchorToPercent(parseAnchor(selectedElement.anchor?.max).y)} onChange={(event) => updateAnchorValue('max', 'y', event.target.value)} /></Field>
+              <Field label="Offset Min X (px)"><input type="number" step="0.1" value={selectedElement.offset?.minX || 0} onChange={(event) => updateOffsetValue('minX', event.target.value)} /></Field>
+              <Field label="Offset Min Y (px)"><input type="number" step="0.1" value={selectedElement.offset?.minY || 0} onChange={(event) => updateOffsetValue('minY', event.target.value)} /></Field>
+              <Field label="Offset Max X (px)"><input type="number" step="0.1" value={selectedElement.offset?.maxX || 0} onChange={(event) => updateOffsetValue('maxX', event.target.value)} /></Field>
+              <Field label="Offset Max Y (px)"><input type="number" step="0.1" value={selectedElement.offset?.maxY || 0} onChange={(event) => updateOffsetValue('maxY', event.target.value)} /></Field>
+              <div className="editor-field--full">
+                <div className="editor-footer-note">Anchors are percentages of the parent area: `0` is the start edge, `100` is the far edge. Offsets are pixel nudges on top of that.</div>
+              </div>
             </div>
           )}
         </div>
