@@ -35,15 +35,22 @@ npm install
 npm run dev
 ```
 
-Run the optional API scaffold for cloud-oriented features:
+Run the API scaffold separately for cloud-oriented features:
 
 ```bash
 npm run dev:api
 ```
 
+Run frontend and API together:
+
+```bash
+npm run dev:full
+```
+
 Build for production:
 
 ```bash
+npm run check
 npm run build
 ```
 
@@ -70,6 +77,7 @@ Rust-CUI-Builder/
 |- src/                 # app source
 |- server/              # Node API scaffold for Stripe, RCUI crypto, and logging
 |- supabase/            # Supabase migrations for core app and billing data
+|- scripts/             # repository utility checks
 |- public/              # static files, icons, service worker assets
 |- assets/              # imported CSS bundles used by current screens
 |- docs/                # contributor-facing project documentation
@@ -111,6 +119,7 @@ If you want to keep building the project, start here:
 - [docs/BACKEND_REQUIREMENTS.md](./docs/BACKEND_REQUIREMENTS.md)
 - [docs/SUPABASE_SETUP.md](./docs/SUPABASE_SETUP.md)
 - [docs/API_SETUP.md](./docs/API_SETUP.md)
+- [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)
 - [CHANGELOG.md](./CHANGELOG.md)
 
 ## License

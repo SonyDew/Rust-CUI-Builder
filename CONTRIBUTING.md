@@ -8,6 +8,7 @@ authorized by the owner should work in this codebase or submit changes.
 - Node.js 20 or newer
 - npm
 - a Supabase project if you want to test cloud-backed flows
+- Stripe test credentials if you want to test billing end to end
 
 ## Local Setup
 
@@ -25,10 +26,16 @@ npm install
 npm run dev
 ```
 
-4. Before committing, make sure the production build still works:
+Or start frontend and API together:
 
 ```bash
-npm run build
+npm run dev:full
+```
+
+4. Before committing, run the repository checks:
+
+```bash
+npm run check
 ```
 
 ## Development Modes
@@ -44,11 +51,11 @@ You can work in two practical modes:
 
 Good next areas for contributors:
 
-- replace backend placeholders with real documented endpoints
-- commit or document the Supabase schema and policies
+- connect the committed Supabase/API scaffolding to real hosted services
 - add automated smoke tests for auth, dashboard, editor, and ticket flows
 - improve editor UX and data validation
 - tighten admin/share flows against live data
+- add deployment automation for frontend, API, and Supabase migrations
 
 ## Project Conventions
 
@@ -61,16 +68,20 @@ Good next areas for contributors:
 
 ## Manual Checks Before Opening a PR
 
-- `npm run build` succeeds
+- `npm run check` succeeds
 - `/auth` still renders and basic auth actions do not crash
 - `/dashboard` still loads
 - `/editor/:projectId` still opens and saves locally when Supabase is missing
 - `/plans`, `/share/:projectId`, and `/legal/:type` still render
 - support ticket UI still opens from the dashboard
+- `/api/health` responds if the API server is running
 
 ## Useful Reference Files
 
 - [README.md](./README.md)
 - [docs/PROJECT_STATUS.md](./docs/PROJECT_STATUS.md)
 - [docs/BACKEND_REQUIREMENTS.md](./docs/BACKEND_REQUIREMENTS.md)
+- [docs/SUPABASE_SETUP.md](./docs/SUPABASE_SETUP.md)
+- [docs/API_SETUP.md](./docs/API_SETUP.md)
+- [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)
 - [CHANGELOG.md](./CHANGELOG.md)

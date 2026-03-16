@@ -10,8 +10,11 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:full": "concurrently -k -n web,api \"npm run dev\" \"npm run dev:api\"",
     "dev:api": "node --watch server/index.js",
     "start:api": "node server/index.js",
+    "check:server": "node scripts/check-server.mjs",
+    "check": "npm run check:server && npm run build",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -28,6 +31,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.2.1",
     "vite": "^5.4.10"
   }
 }

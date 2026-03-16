@@ -49,6 +49,12 @@ npm run dev
 npm run dev:api
 ```
 
+Or use the combined local workflow:
+
+```bash
+npm run dev:full
+```
+
 The Vite config proxies `/api/*` to `http://localhost:3000`.
 
 `src/utils/projectFile.js` already calls the API server on port `3000` during
@@ -77,3 +83,11 @@ You still need to register the webhook endpoint in Stripe, for example:
 
 This is deliberately simple so another developer can replace it with a real
 log pipeline without changing the frontend.
+
+## Repository checks
+
+Before committing backend changes:
+
+```bash
+npm run check
+```

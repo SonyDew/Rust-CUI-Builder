@@ -6,7 +6,7 @@ Last updated: 2026-03-16
 
 The repository is a working frontend for Rust CUI Builder. It can be started,
 built, and used locally without Supabase thanks to a browser-persisted local
-mode. The main remaining work is backend integration, schema documentation, and
+mode. The main remaining work is hosted service integration, automated testing, and
 production hardening.
 
 ## Working Today
@@ -28,8 +28,7 @@ production hardening.
 
 ## Known Gaps
 
-- no production backend implementation for Stripe, RCUI encryption, or
-  security logging
+- no production credentials, webhook registration, or deployment automation
 - no automated test coverage
 - desktop application packaging is not part of this repository
 
@@ -59,5 +58,5 @@ The project will be much easier to hand off once it has:
 - documented backend endpoints
 - reproducible Supabase setup
 - at least a small automated test suite
-- clearer deployment instructions
+- deployment automation
 - a stable release checklist
