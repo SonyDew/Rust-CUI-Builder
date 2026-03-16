@@ -1,14 +1,38 @@
 # Rust CUI Builder
 
-Rust CUI Builder is a React + Vite client for designing Rust game UI layouts in
-a visual editor instead of hand-writing every panel and element.
+Rust CUI Builder is a visual builder for the in-game interfaces used by Rust
+servers and plugins. It helps Rust server owners and plugin developers create
+menus, buttons, overlays, popups, shops, and other CUI screens in a browser
+instead of positioning every element by hand in code.
 
-This repository already contains a working web app with auth screens,
-dashboard flows, support tickets, plan management UI, share/legal/admin pages,
-and a browser-based editor. It also includes Supabase migrations and a backend
-API scaffold for cloud features that can be wired up later.
+In one sentence: this is a browser-based constructor for custom Rust server
+menus and panels.
 
-## What is in this repository
+In practice, you open the editor, place panels, text, buttons, and images,
+preview the layout, save project versions, and export the result for use in
+your Rust plugin workflow.
+
+This repository contains the web app itself plus optional backend scaffolding
+for auth, cloud sync, billing, and encrypted project files.
+
+## What This Project Does
+
+- lets you design Rust CUI layouts visually
+- previews how a menu or panel will look before you wire it into a plugin
+- stores projects, drafts, tags, favorites, and shared views
+- exports and imports `.rcui` project files
+- provides optional cloud features for auth, tickets, notifications, and billing
+
+## Who It Is For
+
+- Rust server owners who want custom in-game UI
+- Rust plugin developers who want to build UI faster
+- designers working with Rust developers on plugin menus and screens
+
+This is not a cheat or a client-side game mod. It is a tool for building the
+interface layer used by Rust server plugins.
+
+## What Is In This Repository
 
 - React 18 + Vite frontend
 - Node/Express API scaffold for Stripe, security events, and RCUI crypto
