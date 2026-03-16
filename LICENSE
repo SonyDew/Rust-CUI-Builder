@@ -1,0 +1,75 @@
+Rust CUI Builder Proprietary License
+
+Copyright (c) 2026 Hex Plugins.
+All rights reserved.
+
+This repository and all accompanying source code, bundled assets, design files,
+generated artifacts, screenshots, documentation, and other materials are
+proprietary and confidential. No open source license is granted.
+
+1. Authorized Access
+
+You may access and use the contents of this repository only if you are Hex
+Plugins or a person or entity expressly authorized in writing by Hex Plugins to
+work on, review, deploy, or operate Rust CUI Builder.
+
+2. No Public License
+
+Except for the limited internal access above, no right is granted to use, copy,
+modify, merge, publish, distribute, sublicense, sell, host, disclose, reverse
+engineer, scrape, or create derivative works from any part of this repository.
+
+3. Restrictions
+
+You may not:
+
+- rebrand, resell, or publicly redistribute the software;
+- expose source code or private assets to unauthorized parties;
+- use automated means to clone product behavior, pricing logic, or internal
+  workflows;
+- remove ownership, copyright, attribution, or confidentiality notices;
+- use project names, trademarks, or logos except as required for authorized
+  internal work.
+
+4. Third-Party Software
+
+Third-party libraries, frameworks, fonts, icons, services, and other
+dependencies referenced by this project remain subject to their own licenses and
+terms. This license applies only to proprietary portions controlled by Hex
+Plugins.
+
+5. Confidentiality
+
+Any non-public material in this repository is confidential. Authorized
+recipients must use reasonable measures to protect it and must not disclose it
+outside their approved team, contract scope, or internal business use.
+
+6. Termination
+
+Any breach of this license automatically terminates your rights under it. Upon
+termination, you must stop using the repository contents and delete any
+unauthorized copies under your control.
+
+7. Separate Commercial Rights
+
+If you need redistribution, resale, white-label, public hosting, or broader
+commercial rights, you must obtain a separate written agreement from Hex
+Plugins.
+
+8. No Warranty
+
+THE SOFTWARE AND REPOSITORY CONTENTS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND
+NON-INFRINGEMENT.
+
+9. Limitation of Liability
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, HEX PLUGINS WILL NOT BE LIABLE FOR ANY
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, CONSEQUENTIAL, OR LOSS-OF-PROFIT
+DAMAGES ARISING FROM OR RELATED TO THE USE OF THIS REPOSITORY OR THE SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+10. Reservation of Rights
+
+All rights not expressly granted by this license are reserved by Hex Plugins.
