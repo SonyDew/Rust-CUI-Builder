@@ -43,6 +43,34 @@ const parseAnchor = (anchorStr) => {
     return { x: parseFloat(parts[0]), y: parseFloat(parts[1]) };
 };
 
+const pad = (value) => String(Math.max(0, Math.floor(value))).padStart(2, '0');
+
+const formatCountdownPreview = (element) => {
+    const totalSeconds = Math.max(0, Math.round((Number(element?.endTime) || 0) - (Number(element?.startTime) || 0)));
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    switch (element?.timerFormat) {
+        case 'SecondsHundreth':
+            return `${pad(totalSeconds)}.00`;
+        case 'MinutesSecondsHundreth':
+            return `${pad(Math.floor(totalSeconds / 60))}:${pad(seconds)}.00`;
+        case 'HoursMinutes':
+            return `${pad(Math.floor(totalSeconds / 3600))}:${pad(minutes)}`;
+        case 'HoursMinutesSeconds':
+            return `${pad(Math.floor(totalSeconds / 3600))}:${pad(minutes)}:${pad(seconds)}`;
+        case 'DaysHoursMinutes':
+            return `${days}d ${pad(hours)}h ${pad(minutes)}m`;
+        case 'DaysHoursMinutesSeconds':
+            return `${days}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
+        case 'MinutesSeconds':
+        default:
+            return `${pad(Math.floor(totalSeconds / 60))}:${pad(seconds)}`;
+    }
+};
+
 const ProjectPreview = ({ project, width = 300, selectedId = null, onElementPointerDown, onCanvasPointerDown }) => {
     const elements = project.elements || [];
     const settings = project.settings || {};
@@ -58,9 +86,10 @@ const ProjectPreview = ({ project, width = 300, selectedId = null, onElementPoin
         const anchorMax = parseAnchor(el.anchor.max);
         const offset = el.offset;
         const isSelected = el.id === selectedId;
+        const isTextual = el.type === 'Text' || el.type === 'Button' || el.type === 'Countdown';
 
-        const bgColor = (el.type === 'Panel' || el.type === 'Button' || el.type === 'InputField' || el.type === 'ScrollView') ? getCssColor(el.color, el.opacity) : 'transparent';
-        const txtColor = (el.type === 'Button' || el.type === 'InputField') ? (el.textColor || 'white') : (el.type === 'Text' ? getCssColor(el.color, el.opacity) : 'white');
+        const bgColor = (el.type === 'Panel' || el.type === 'Button' || el.type === 'InputField' || el.type === 'ScrollView' || el.type === 'Slot') ? getCssColor(el.color, el.opacity) : 'transparent';
+        const txtColor = (el.type === 'Button' || el.type === 'InputField') ? (el.textColor || 'white') : (isTextual ? getCssColor(el.color, el.opacity) : 'white');
 
         let fontFamily = 'inherit';
         if (el.font) {
@@ -97,7 +126,7 @@ const ProjectPreview = ({ project, width = 300, selectedId = null, onElementPoin
             const dx = dist[0] || 1;
             const dy = dist[1] || -1;
             const color = getCssColor(el.outline.color, 100);
-            if (el.type === 'Text' || el.type === 'Button') {
+            if (isTextual) {
                 textShadow = `${dx}px ${-dy}px 0 ${color}`;
             } else {
                 boxShadow = `${dx}px ${-dy}px 0 ${color}`;
@@ -109,7 +138,7 @@ const ProjectPreview = ({ project, width = 300, selectedId = null, onElementPoin
              const dx = dist[0] || 1;
              const dy = dist[1] || -1;
              const color = getCssColor(el.shadow.color, 100);
-             if (el.type === 'Text' || el.type === 'Button') {
+             if (isTextual) {
                  const currentShadow = textShadow === 'none' ? '' : textShadow + ', ';
                  textShadow = currentShadow + `${dx}px ${-dy}px 2px ${color}`;
              } else {
@@ -117,6 +146,12 @@ const ProjectPreview = ({ project, width = 300, selectedId = null, onElementPoin
                  boxShadow = currentShadow + `${dx}px ${-dy}px 5px ${color}`;
              }
         }
+
+        const border = el.type === 'Slot'
+            ? '1px dashed rgba(214, 234, 255, 0.48)'
+            : el.type === 'ScrollView'
+                ? '1px solid rgba(214, 234, 255, 0.18)'
+                : 'none';
 
         return {
             position: 'absolute',
@@ -127,7 +162,7 @@ const ProjectPreview = ({ project, width = 300, selectedId = null, onElementPoin
             backgroundColor: bgColor,
             color: txtColor,
             transform: `rotate(${el.rotation || 0}deg)`,
-            display: 'flex',
+            display: el.type === 'ScrollView' ? 'block' : 'flex',
             alignItems,
             justifyContent,
             fontSize: `${el.fontSize || 14}px`,
@@ -139,7 +174,7 @@ const ProjectPreview = ({ project, width = 300, selectedId = null, onElementPoin
             backgroundRepeat: el.png ? 'repeat' : 'no-repeat',
             textAlign: el.align ? el.align.replace(/([A-Z])/g, ' $1').trim() : 'center',
             overflow: el.type === 'ScrollView' ? 'hidden' : 'visible',
-            border: 'none',
+            border,
             boxSizing: 'border-box',
             textShadow,
             boxShadow: isSelected
@@ -153,6 +188,8 @@ const ProjectPreview = ({ project, width = 300, selectedId = null, onElementPoin
 
     const renderRecursive = (el) => {
         const children = elements.filter(child => child.parent === el.id);
+        const contentScaleX = Math.max(1, Number(el.contentScaleX) || 1);
+        const contentScaleY = Math.max(1, Number(el.contentScaleY) || 1);
         return (
             <div
                 key={el.id}
@@ -162,10 +199,28 @@ const ProjectPreview = ({ project, width = 300, selectedId = null, onElementPoin
                 {el.type === 'Text' && el.text}
                 {el.type === 'Button' && (el.text || 'Button')}
                 {el.type === 'InputField' && (el.text || 'Input...')}
-                {el.type === 'ItemIcon' && <span style={{ fontSize: '24px' }}>📦</span>}
-                {el.type === 'Countdown' && <div style={{width: '100%', height: '100%', background: '#888'}}></div>}
-
-                {children.map(child => renderRecursive(child))}
+                {el.type === 'Countdown' && (el.text?.trim() || formatCountdownPreview(el))}
+                {el.type === 'Slot' && (
+                    <div style={{ textAlign: 'center', color: '#d7ecff', fontSize: '12px', letterSpacing: '0.04em' }}>
+                        <div style={{ fontSize: '22px', marginBottom: '4px' }}>[]</div>
+                        <div>{el.filter || 'slot'}</div>
+                    </div>
+                )}
+                {el.type === 'ScrollView' ? (
+                    <>
+                        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+                            <div style={{ position: 'relative', width: `${contentScaleX * 100}%`, height: `${contentScaleY * 100}%`, minWidth: '100%', minHeight: '100%' }}>
+                                {children.length > 0 ? children.map(child => renderRecursive(child)) : (
+                                    <div style={{ position: 'absolute', inset: '12px', border: '1px dashed rgba(214, 234, 255, 0.2)', borderRadius: '10px', display: 'grid', placeItems: 'center', color: '#8eb4d6', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                                        Scroll content
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        {el.vertical !== false && <div style={{ position: 'absolute', top: '10px', right: '8px', width: '4px', height: '28%', borderRadius: '999px', background: 'rgba(214, 234, 255, 0.24)' }} />}
+                        {el.horizontal && <div style={{ position: 'absolute', left: '10px', bottom: '8px', width: '28%', height: '4px', borderRadius: '999px', background: 'rgba(214, 234, 255, 0.24)' }} />}
+                    </>
+                ) : children.map(child => renderRecursive(child))}
             </div>
         );
     };

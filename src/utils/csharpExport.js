@@ -262,6 +262,61 @@ const buildInputFieldComponentBlock = (element) => {
     ];
 };
 
+const buildScrollViewComponentBlock = (element) => {
+    const horizontal = Boolean(element.horizontal);
+    const vertical = element.vertical !== false;
+    const contentScaleX = Math.max(1, toNumber(element.contentScaleX, 1));
+    const contentScaleY = Math.max(1, toNumber(element.contentScaleY, 1));
+
+    return [
+        'new CuiScrollViewComponent',
+        '{',
+        '    ContentTransform = new CuiRectTransform',
+        '    {',
+        '        AnchorMin = "0 0",',
+        `        AnchorMax = ${toCSharpStringLiteral(`${formatCoordinate(contentScaleX, 1)} ${formatCoordinate(contentScaleY, 1)}`)},`,
+        '        OffsetMin = "0 0",',
+        '        OffsetMax = "0 0",',
+        '    },',
+        `    Horizontal = ${horizontal ? 'true' : 'false'},`,
+        `    Vertical = ${vertical ? 'true' : 'false'},`,
+        `    MovementType = ScrollRect.MovementType.${element.movementType || 'Clamped'},`,
+        `    Elasticity = ${formatFloatLiteral(element.elasticity, 0.1)},`,
+        `    Inertia = ${element.inertia === false ? 'false' : 'true'},`,
+        `    DecelerationRate = ${formatFloatLiteral(element.decelerationRate, 0.135)},`,
+        `    ScrollSensitivity = ${formatFloatLiteral(element.scrollSensitivity, 24)},`,
+        '}',
+    ];
+};
+
+const buildCountdownComponentBlock = (element) => {
+    const command = normalizeCommand(element.command);
+    const assignments = [
+        `StartTime = ${formatFloatLiteral(element.startTime, 0)}`,
+        `EndTime = ${formatFloatLiteral(element.endTime, 30)}`,
+        `Step = ${formatFloatLiteral(element.interval, 1)}`,
+        `Interval = ${formatFloatLiteral(element.interval, 1)}`,
+        `TimerFormat = TimerFormat.${element.timerFormat || 'MinutesSeconds'}`,
+        `DestroyIfDone = ${element.destroyIfDone ? 'true' : 'false'}`,
+    ];
+
+    if (command) assignments.push(`Command = ${toCSharpStringLiteral(command)}`);
+
+    return [
+        'new CuiCountdownComponent',
+        '{',
+        ...assignments.map((line) => `    ${line},`),
+        '}',
+    ];
+};
+
+const buildSlotComponentBlock = (element) => [
+    'new CuiSlotComponent',
+    '{',
+    `    Filter = ${toCSharpStringLiteral(element.filter || 'any')},`,
+    '}',
+];
+
 const pushBlock = (lines, block, indentLevel = 0) => {
     const padding = INDENT.repeat(indentLevel);
     block.forEach((line) => lines.push(`${padding}${line}`));
@@ -376,6 +431,25 @@ const createElementEmitter = (context) => {
                 if (!normalizeCommand(element.command)) notes.readOnlyInputs += 1;
                 return createElementContainerBlock({ nameVar, parentRef, componentBlocks });
 
+            case 'ScrollView':
+                componentBlocks.push(buildImageComponentBlock(color));
+                componentBlocks.push(buildScrollViewComponentBlock(element));
+                componentBlocks.push(buildRectTransformBlock(element));
+                return createElementContainerBlock({ nameVar, parentRef, componentBlocks });
+
+            case 'Countdown':
+                componentBlocks.push(buildTextComponentBlock(element));
+                componentBlocks.push(buildCountdownComponentBlock(element));
+                componentBlocks.push(buildRectTransformBlock(element));
+                if (element.outline?.enabled) componentBlocks.push(buildOutlineComponentBlock(element.outline));
+                return createElementContainerBlock({ nameVar, parentRef, componentBlocks });
+
+            case 'Slot':
+                componentBlocks.push(buildImageComponentBlock(color));
+                componentBlocks.push(buildSlotComponentBlock(element));
+                componentBlocks.push(buildRectTransformBlock(element));
+                return createElementContainerBlock({ nameVar, parentRef, componentBlocks });
+
             default:
                 notes.unsupported.push(`${element.type}#${index + 1}`);
                 return [
@@ -413,12 +487,13 @@ export const buildRustPluginCode = (project, options = {}) => {
         childrenByParent.get(parentId).push({ ...element, __index: index });
     });
 
-    const hasCursor = normalized.elements.some((element) => element.type === 'Button' || element.type === 'InputField');
+    const hasCursor = normalized.elements.some((element) => element.type === 'Button' || element.type === 'InputField' || element.type === 'ScrollView');
     const hasKeyboard = normalized.elements.some((element) => element.type === 'InputField');
     const backgroundUrl = isRemoteUrl(normalized.settings.backgroundUrl) ? normalized.settings.backgroundUrl.trim() : '';
     const lines = [
         'using Oxide.Game.Rust.Cui;',
         'using UnityEngine;',
+        'using UnityEngine.UI;',
         '',
         'namespace Oxide.Plugins',
         '{',
