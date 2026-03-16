@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Bell, FolderKanban, LifeBuoy, ShieldCheck, Users } from 'lucide-react';
 import { supabase } from '../supabaseClient';
-import './RecoveredRoutes.css';
+import './SharedRouteShell.css';
 
 const COUNT_TABLES = [
     { key: 'profiles', label: 'Profiles', icon: Users },
@@ -75,7 +75,7 @@ const AdminDashboard = () => {
                             <span style={{ marginLeft: '8px' }}>Admin Console</span>
                         </div>
                         <h1 style={{ margin: 0 }}>Workspace overview</h1>
-                        <p className="admin-subtitle">A lightweight recovery admin panel rebuilt from the archive snapshot.</p>
+                        <p className="admin-subtitle">A lightweight admin view for projects, users, tickets, and notifications.</p>
                     </div>
                     <button className="glass-btn" onClick={() => navigate('/dashboard')}>
                         <ArrowLeft size={16} style={{ marginRight: '8px' }} />

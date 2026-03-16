@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ExternalLink, MonitorSmartphone } from 'lucide-react';
-import './RecoveredRoutes.css';
+import './SharedRouteShell.css';
 
 const DesktopAuthCallback = () => {
     const navigate = useNavigate();

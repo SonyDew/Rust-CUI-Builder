@@ -92,7 +92,7 @@ const Editor = () => {
           setSettings({ ...DEFAULT_SETTINGS, ...(draft.settings || {}) });
           setSelectedId(draft.elements?.[0]?.id || null);
           setSaveState('local');
-          setErrorMessage('Loaded local recovery copy because cloud data is unavailable.');
+          setErrorMessage('Loaded local draft because cloud data is unavailable.');
         } else {
           setErrorMessage(error?.message || 'Failed to load project');
         }
@@ -203,7 +203,7 @@ const Editor = () => {
     return { ...element, anchor: { ...element.anchor, [edge]: formatAnchor(next) } };
   });
   const updateOffsetValue = (key, value) => patchSelected((element) => ({ ...element, offset: { ...element.offset, [key]: toNumber(value, element.offset?.[key] || 0) } }));
-  const saveLabel = saveState === 'saving' ? 'Saving...' : saveState === 'queued' ? 'Queued offline' : saveState === 'local' ? 'Local recovery copy' : saveState === 'dirty' ? 'Unsaved changes' : lastSavedAt ? `Saved ${new Date(lastSavedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : 'Saved';
+  const saveLabel = saveState === 'saving' ? 'Saving...' : saveState === 'queued' ? 'Queued offline' : saveState === 'local' ? 'Local draft' : saveState === 'dirty' ? 'Unsaved changes' : lastSavedAt ? `Saved ${new Date(lastSavedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : 'Saved';
 
   if (loading) return <div className="route-loader">Loading editor...</div>;
   if (errorMessage && !elements.length) return <div className="route-loader">{errorMessage}</div>;
@@ -263,7 +263,7 @@ const Editor = () => {
           <div className="editor-preview-frame">
             <div className="editor-panel" style={{ marginBottom: '18px' }}>
               <div className="editor-panel-header">
-                <div><h3>Preview canvas</h3><div className="editor-footer-note">Live preview using the recovered renderer.</div></div>
+                <div><h3>Preview canvas</h3><div className="editor-footer-note">Live preview of the current project.</div></div>
                 <div className="editor-toolbar-group"><span className="editor-footer-note">{previewWidth}px</span><input type="range" min="620" max="1080" step="20" value={previewWidth} onChange={(event) => setPreviewWidth(toNumber(event.target.value, 920))} /></div>
               </div>
             </div>

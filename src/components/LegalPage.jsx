@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, FileText, Lock, Shield } from 'lucide-react';
-import './RecoveredRoutes.css';
+import './SharedRouteShell.css';
 
 const sections = {
     terms: {
@@ -13,9 +13,9 @@ const sections = {
                 <h3>Acceptable use</h3>
                 <p>Use the platform to create, review, and share project interfaces. Do not abuse collaboration or billing systems, and do not attempt to impersonate other users.</p>
                 <h3>Intellectual property</h3>
-                <p>The recovered product metadata and UI language identify the product as proprietary. Generated project output belongs to its creator, while the platform implementation remains owned by its author.</p>
+                <p>The platform is distributed under the license published at the repository root. Generated project output belongs to its creator, while the application code remains subject to repository terms.</p>
                 <h3>Service caveat</h3>
-                <p>This repository is a recovery build from an archive. Until the backend and missing source parts are fully restored, some cloud features may be limited or unavailable.</p>
+                <p>Some cloud features depend on configured Supabase services and companion API routes. Without them, local editing and browsing still work, but billing, encrypted transfer, and some realtime features may be limited.</p>
             </>
         )
     },
@@ -29,8 +29,8 @@ const sections = {
                 <p>Theme preference, editor queue data for offline saves, and temporary auth/session values in the browser.</p>
                 <h3>What is stored remotely</h3>
                 <p>Projects, user profiles, notifications, support tickets, and plan-related metadata when cloud services are enabled.</p>
-                <h3>Recovery build note</h3>
-                <p>This project now includes local visual fallbacks so the app can still render even when cloud branding or backend endpoints are missing.</p>
+                <h3>Local mode note</h3>
+                <p>The client includes local fallbacks so the app can still render and preserve editor state when cloud services are not configured.</p>
             </>
         )
     },
@@ -39,7 +39,7 @@ const sections = {
         icon: Lock,
         body: (
             <>
-                <p>This repository currently ships with a proprietary license file at the project root. That choice follows the ownership language found inside the recovered application snapshot.</p>
+                <p>This repository currently ships with a proprietary license file at the project root. Review that file before redistribution, resale, or external reuse.</p>
                 <h3>Repository license</h3>
                 <p>The root <code>LICENSE</code> defines current repository terms. If ownership or publication strategy changes, update that file before wider distribution.</p>
                 <h3>Third-party software</h3>
@@ -81,7 +81,7 @@ const LegalPage = () => {
                     <div className="legal-page-head">
                         <div>
                             <h1 style={{ margin: 0 }}>{active.title}</h1>
-                            <p className="legal-page-subtitle">Recovered project policy page for the rebuilt application shell.</p>
+                            <p className="legal-page-subtitle">Policy page for the Rust CUI Builder web client.</p>
                         </div>
                     </div>
                     <div className="legal-page-body">{active.body}</div>

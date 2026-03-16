@@ -1,27 +1,27 @@
 # Rust CUI Builder
 
-> Recovered and runnable React + Vite app rebuilt from an archived Rust CUI Builder snapshot.
+> React + Vite application for building Rust CUI layouts visually.
 
-![Status](https://img.shields.io/badge/status-archive_recovery-orange)
+![Status](https://img.shields.io/badge/status-active_development-1f8b4c)
 ![License](https://img.shields.io/badge/license-proprietary-red)
 ![Frontend](https://img.shields.io/badge/frontend-React%20%2B%20PWA-0d99ff)
 ![Backend](https://img.shields.io/badge/backend-Supabase%20%2B%20custom%20API-3ecf8e)
 
 > [!IMPORTANT]
-> The original archive is still preserved under `extracted/`, but the working application now lives in the repository root as a recovery build. Some cloud features still depend on Supabase and companion API routes.
+> The repository contains a working client application. Billing, encryption, and some realtime features still depend on configured Supabase services and companion API routes.
 
 ## Overview
 
-Rust CUI Builder is a commercial product aimed at Rust server and plugin developers who want to build game UI layouts visually instead of hand-authoring every screen. The recovered app in this repository now includes:
+Rust CUI Builder is aimed at Rust server and plugin developers who want to design game UI layouts visually instead of hand-authoring every screen. The current repository includes:
 
-- visual project management and previews
-- Supabase-backed auth, storage, realtime, and collaboration
+- project management, previews, favorites, tags, drafts, and trash handling
+- Supabase-backed auth, storage, realtime, and collaboration flows
 - plan gating for Free, Solo, and Team subscriptions
 - support tickets and notification workflows
-- offline/PWA behavior with a service worker
-- encrypted `.rcui` export and import flows
-- Windows desktop integration hooks alongside the web app
-- a rebuilt recovery editor route that is usable locally
+- offline/PWA behavior with a service worker and queued saves
+- `.rcui` export and import flows
+- legal, share, admin, and desktop callback routes
+- a working browser-based editor
 
 ## Quick Start
 
@@ -40,20 +40,20 @@ Optional environment variables:
 
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
-- `VITE_ENABLE_CLIENT_SECURITY=false` for local development if you want to force-disable the anti-devtools client code in production-like builds
+- `VITE_ENABLE_CLIENT_SECURITY=false` to disable the client security overlay in local development
 
-## Snapshot Status
+## Project Status
 
-| Area | Status now |
+| Area | Status |
 | --- | --- |
-| Authentication and onboarding | Working recovery build |
-| Dashboard, favorites, tags, trash, previews | Working recovery build |
-| Notifications and support tickets | Working recovery build |
-| Plans, billing UI, and Stripe handoff | UI restored, backend still required |
-| Offline queue and service worker | Working recovery build |
-| Desktop app hooks | Route restored |
-| Visual editor | Rebuilt recovery editor |
-| Admin, share, legal, and desktop callback routes | Restored |
+| Authentication and onboarding | Working |
+| Dashboard, favorites, tags, trash, previews | Working |
+| Notifications and support tickets | Working with Supabase |
+| Plans, billing UI, and Stripe handoff | UI present, backend required |
+| Offline queue and service worker | Working |
+| Desktop auth callback route | Working |
+| Visual editor | Working locally and with cloud sync when configured |
+| Admin, share, and legal routes | Working |
 | Local Vite build | Working |
 
 ## Architecture
@@ -70,10 +70,10 @@ flowchart LR
 
 ```text
 Rust-CUI-Builder/
-|- src/                 # working recovery app
-|- public/              # rebuilt local branding + PWA assets
-|- assets/              # recovered archived bundles and CSS
-|- extracted/           # untouched archive snapshot
+|- src/                 # application source
+|- public/              # PWA icons, branding, and static files
+|- assets/              # shared imported CSS assets
+|- docs/                # project notes and audit
 |- README.md
 |- LICENSE
 |- CHANGELOG.md
@@ -81,30 +81,18 @@ Rust-CUI-Builder/
 \- vite.config.js
 ```
 
-## Key Product Capabilities Recovered
+## Feature Highlights
 
-- Rust-focused visual UI workflow with project cards, previews, tags, favorites, drafts, and trash handling.
-- Supabase auth flows for email/password, OTP, and OAuth-style sign-in handoff.
-- Subscription-aware limits for projects, drafts, collaboration, assets, and version history.
-- Team collaboration patterns with collaborators, notifications, presence tracking, and support tickets.
-- Encrypted project export/import using the custom `.rcui` format.
-- PWA/offline behavior with shell caching and deferred save queue support.
-- In-app release history that traces the product from `1.0.0` to `1.5.0`.
-
-## What Is Missing
-
-This project is now runnable, but it is still a recovery build. The biggest remaining gaps are:
-
-- the root app is reconstructed from an incomplete snapshot, so some behaviors are approximation rather than byte-for-byte recovery
-- Stripe, security logging, and encrypted `.rcui` APIs still require backend routes
-- Supabase-backed features still need real credentials and matching tables/policies
-- the original archive inside `extracted/` still contains broken historical files such as the captured Cloudflare `manifest.json`
-
-For a fuller breakdown, see [docs/PROJECT_AUDIT.md](docs/PROJECT_AUDIT.md).
+- Visual Rust CUI workflow with layered editing, previews, and export-ready metadata.
+- Project organization with search, tagging, favorites, drafts, and trash states.
+- Collaboration patterns with notifications, comments/share flows, and support tickets.
+- `.rcui` import/export support for transfer and backup workflows.
+- PWA shell with offline queue handling and reconnect sync behavior.
+- In-app release history covering versions `1.0.0` through `1.5.0`.
 
 ## Environment and Companion Services
 
-The rebuilt client expects the following pieces around it for full cloud functionality:
+For full cloud functionality the client expects:
 
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
@@ -113,14 +101,22 @@ The rebuilt client expects the following pieces around it for full cloud functio
 - API routes for `/api/stripe/create-checkout`, `/api/stripe/subscription/:id`, and `/api/stripe/portal`
 - server-side encryption material for `.rcui` handling
 
-An `.env.example` file is included for the client-side values that appear in source. Without them, the app still runs in local recovery mode and stores editor state locally where possible.
+An `.env.example` file is included for the client-side values referenced in source. Without them, the app still starts and keeps local editor state where fallback paths are implemented.
+
+## Remaining Gaps
+
+- Stripe, security logging, and encrypted `.rcui` flows still require backend routes.
+- Supabase-backed features need real credentials plus matching tables and policies.
+- Native desktop packaging is not included in this repository.
+
+For a fuller breakdown, see [docs/PROJECT_AUDIT.md](docs/PROJECT_AUDIT.md).
 
 ## Changelog
 
-The in-app release history has been extracted into [CHANGELOG.md](CHANGELOG.md).
+The in-app release history is mirrored in [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-This repository is documented as proprietary source-available code owned by Hex Plugins, matching the ownership language embedded in the recovered application UI.
+This repository currently ships under a proprietary source-available license.
 
 See [LICENSE](LICENSE).

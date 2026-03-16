@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import ProjectPreview from './ProjectPreview';
 import ErrorPage from './ErrorPage';
-import './RecoveredRoutes.css';
+import './SharedRouteShell.css';
 
 const ShareView = () => {
     const { projectId } = useParams();

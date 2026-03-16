@@ -4,91 +4,55 @@ Audit date: 2026-03-16
 
 ## Summary
 
-The archive `rustcuitoolbeta.rar` was unpacked and inspected. The recovered
-material is valuable, but it is not a complete source repository. It is best
-described as an archive recovery snapshot that combines:
+This repository is a runnable Vite client for Rust CUI Builder. Core app flows,
+the editor, dashboard, auth screens, legal/share/admin routes, and PWA assets
+are present. Full production behavior still depends on Supabase and a companion
+API layer.
 
-- a partial `src/` tree with 37 source files
-- 25 prebuilt asset bundles under `assets/`
-- root web files: `index.html`, `manifest.json`, and `sw.js`
+## Current Surface Area
 
-## What The Snapshot Clearly Contains
+The project currently includes:
 
-The recovered source confirms the presence of:
+- React 18 + Vite application scaffolding
+- working `src/` application tree and route coverage
+- PWA/public assets and service worker support
+- local fallback behavior for editor saves when cloud services are unavailable
+- documented environment variables and project metadata files
 
-- authentication, account management, onboarding, and plan gating
-- a rich dashboard with previews, favorites, tags, trash, and drafts
-- Supabase integration for auth, database access, realtime, notifications, and
-  storage
-- support ticket flows and in-app notification handling
-- RCUI export/import with companion API encryption and decryption
-- offline queue support plus a service worker
-- Windows desktop integration hooks and a release history up to version `1.5.0`
+## Working Areas
 
-## Major Gaps
+- authentication and onboarding UI
+- dashboard flows for previews, favorites, tags, drafts, and trash
+- visual editor with local save fallback and export support
+- support tickets and notification UI
+- share, legal, admin, and desktop callback routes
+- local development and production builds
 
-The following blockers prevent this snapshot from acting like a clean modern
-front-end repository:
+## External Services Still Required
 
-- no `package.json`, lockfile, or Vite config
-- no documented backend or infrastructure config
-- multiple source routes are referenced but absent:
-  - `src/components/Editor.jsx`
-  - `src/components/AdminDashboard.jsx`
-  - `src/components/AdminRoute.jsx`
-  - `src/components/ShareView.jsx`
-  - `src/components/LegalPage.jsx`
-  - `src/components/DesktopAuthCallback.jsx`
-- multiple referenced stylesheets are absent:
-  - `src/App.css`
-  - `src/index.css`
-  - `src/components/Auth.css`
-  - `src/components/Dashboard.css`
-  - `src/components/LegalModal.css`
-  - `src/components/SettingsModal.css`
-  - `src/components/Skeleton.css`
-  - `src/components/Tickets.css`
-  - `src/components/PageTransition.css`
-  - `src/components/MobileResponsive.css`
-
-## Notable Inconsistencies
-
-- `manifest.json` is not a valid manifest in this snapshot. It contains a
-  captured Cloudflare challenge page rather than JSON.
-- The extracted root looks like a deployed web bundle, while `src/` looks like
-  a partial working tree. That usually means the archive was taken from a mixed
-  export directory rather than from the actual source repository root.
-- Ownership language inside the UI says `Hex Plugins` and marks the product as
-  proprietary. The new root `LICENSE` follows that same direction. If the legal
-  owner name has changed, update the holder name before publishing externally.
-
-## External Dependencies Confirmed From Source
-
-The client depends on:
+The client expects:
 
 - Supabase via `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
-- custom API endpoints for:
-  - `/api/security/event`
-  - `/api/rcui/encrypt`
-  - `/api/rcui/decrypt`
-  - `/api/stripe/create-checkout`
-  - `/api/stripe/subscription/:id`
-  - `/api/stripe/portal`
+- `/api/security/event`
+- `/api/rcui/encrypt`
+- `/api/rcui/decrypt`
+- `/api/stripe/create-checkout`
+- `/api/stripe/subscription/:id`
+- `/api/stripe/portal`
 
-## Practical Recovery Order
+## Remaining Risks
 
-1. Recover the original repository root, especially `package.json`, lockfiles,
-   build config, and missing CSS files.
-2. Restore missing route modules, starting with the editor and share flows.
-3. Replace the invalid `manifest.json` with a real PWA manifest.
-4. Document or restore the companion backend used for security logging, Stripe,
-   and RCUI crypto.
-5. Validate whether the desktop application code lives in a separate repository
-   or was excluded from this archive.
+- Billing, encrypted file handling, and security event logging are not complete
+  without backend routes.
+- Supabase schema, RLS policies, and storage bucket configuration are not
+  bundled in this repository.
+- Native desktop packaging is not present here even though the web client
+  contains desktop callback support.
 
-## Recommendation
+## Recommended Next Steps
 
-Treat this repository as a documented recovery snapshot, not as a ready-to-build
-application. The added root metadata files are meant to make the archive
-understandable and easier to restore, not to hide the fact that the source is
-incomplete.
+1. Add a documented backend or local mock endpoints for Stripe, RCUI crypto,
+   and security logging.
+2. Commit the expected Supabase schema and policy setup.
+3. Add smoke tests for auth, dashboard navigation, and editor save/export flows.
+4. Continue refining editor UX and admin/share functionality against live data.

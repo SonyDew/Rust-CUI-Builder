@@ -1,7 +1,7 @@
 # Changelog
 
-This changelog was reconstructed from the in-app "What's New" panel found in the
-extracted snapshot.
+This changelog mirrors the in-app "What's New" panel shipped with the current
+client.
 
 ## [1.5.0] - 2026-03-04
 
