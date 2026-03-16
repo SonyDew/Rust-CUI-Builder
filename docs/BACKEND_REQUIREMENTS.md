@@ -7,6 +7,9 @@ The Supabase side of this contract is now implemented in
 `supabase/migrations/20260316_000001_core_schema.sql`.
 For setup steps, use [SUPABASE_SETUP.md](./SUPABASE_SETUP.md).
 
+The HTTP API side now has a source-code scaffold in `server/`.
+For setup steps, use [API_SETUP.md](./API_SETUP.md).
+
 ## Supabase Auth
 
 The app uses Supabase Auth for:
@@ -134,6 +137,10 @@ The frontend expects these routes:
 - `POST /api/stripe/create-checkout`
 - `GET /api/stripe/subscription/:id`
 - `POST /api/stripe/portal`
+
+The repository now also includes:
+
+- `POST /api/stripe/webhook`
 
 ## Development Note
 

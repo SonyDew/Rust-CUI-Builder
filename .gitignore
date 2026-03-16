@@ -12,6 +12,7 @@ coverage/
 *.tmp
 *.temp
 *.rcui
+server/logs/
 
 .DS_Store
 Thumbs.db

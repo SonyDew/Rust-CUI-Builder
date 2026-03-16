@@ -1,9 +1,11 @@
 # Supabase Setup
 
-This repository now includes a Supabase schema migration in
-[`supabase/migrations/20260316_000001_core_schema.sql`](../supabase/migrations/20260316_000001_core_schema.sql).
+This repository now includes Supabase schema migrations in:
 
-## What the migration creates
+- [`20260316_000001_core_schema.sql`](../supabase/migrations/20260316_000001_core_schema.sql)
+- [`20260316_000002_billing_fields.sql`](../supabase/migrations/20260316_000002_billing_fields.sql)
+
+## What the migrations create
 
 - `profiles`
 - `user_profiles`
@@ -12,6 +14,7 @@ This repository now includes a Supabase schema migration in
 - `tickets`
 - `ticket_messages`
 - `ticket-files` storage bucket
+- billing metadata columns on `profiles` for Stripe customer/subscription sync
 - auth triggers for profile bootstrap
 - RLS policies for owners, collaborators, admins, public shares, and support
 - realtime publication entries for notifications, tickets, and ticket messages
@@ -19,7 +22,7 @@ This repository now includes a Supabase schema migration in
 ## Recommended setup order
 
 1. Create a Supabase project.
-2. Apply the migration in the SQL editor or through the Supabase CLI.
+2. Apply both migrations in the SQL editor or through the Supabase CLI.
 3. Copy the project URL and anon key into [`../.env.example`](../.env.example) values in your local `.env.local`.
 4. Start the frontend with `npm run dev`.
 5. Create the first account through the app.

@@ -5,12 +5,14 @@ a visual editor instead of hand-writing every panel and element.
 
 This repository already contains a working web app with auth screens,
 dashboard flows, support tickets, plan management UI, share/legal/admin pages,
-and a browser-based editor. Some product features still depend on Supabase and
-backend routes that are not included here.
+and a browser-based editor. It also includes Supabase migrations and a backend
+API scaffold for cloud features that can be wired up later.
 
 ## What is in this repository
 
 - React 18 + Vite frontend
+- Node/Express API scaffold for Stripe, security events, and RCUI crypto
+- Supabase migrations for app data, access rules, storage, and billing metadata
 - visual editor for Rust CUI layouts
 - dashboard with favorites, tags, drafts, trash, and previews
 - auth and onboarding flows
@@ -31,6 +33,12 @@ Install and run the client:
 ```bash
 npm install
 npm run dev
+```
+
+Run the optional API scaffold for cloud-oriented features:
+
+```bash
+npm run dev:api
 ```
 
 Build for production:
@@ -60,6 +68,8 @@ require the real backend.
 ```text
 Rust-CUI-Builder/
 |- src/                 # app source
+|- server/              # Node API scaffold for Stripe, RCUI crypto, and logging
+|- supabase/            # Supabase migrations for core app and billing data
 |- public/              # static files, icons, service worker assets
 |- assets/              # imported CSS bundles used by current screens
 |- docs/                # contributor-facing project documentation
@@ -77,6 +87,7 @@ Working in the frontend today:
 
 - standalone local mode with browser-persisted auth and data
 - committed Supabase schema migration with auth bootstrap, RLS, storage, and realtime wiring
+- committed API scaffold for Stripe, RCUI encryption, and security logging
 - auth and onboarding UI
 - dashboard navigation and project management views
 - editor with local save/sync fallback
@@ -87,7 +98,7 @@ Working in the frontend today:
 Still missing or external:
 
 - live Supabase project with the expected schema, policies, and storage bucket
-- backend routes for Stripe, RCUI encryption, and security events
+- real Stripe credentials, price IDs, webhook registration, and deployment wiring
 - automated tests
 - desktop packaging code
 
@@ -99,6 +110,7 @@ If you want to keep building the project, start here:
 - [docs/PROJECT_STATUS.md](./docs/PROJECT_STATUS.md)
 - [docs/BACKEND_REQUIREMENTS.md](./docs/BACKEND_REQUIREMENTS.md)
 - [docs/SUPABASE_SETUP.md](./docs/SUPABASE_SETUP.md)
+- [docs/API_SETUP.md](./docs/API_SETUP.md)
 - [CHANGELOG.md](./CHANGELOG.md)
 
 ## License

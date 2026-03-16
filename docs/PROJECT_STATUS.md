@@ -16,6 +16,8 @@ production hardening.
   and realtime-style UI flows
 - committed Supabase schema migration with auth bootstrap, RLS, storage, and
   realtime table wiring
+- committed Node/Express API scaffold for security events, RCUI encryption, and
+  Stripe billing routes
 - auth screens and onboarding flow
 - dashboard with project browsing, tags, favorites, drafts, and trash
 - editor route with local save fallback
@@ -33,10 +35,10 @@ production hardening.
 
 ## Highest-Priority Next Steps
 
-1. Define and document the backend contract clearly enough that another
-   developer can stand up a matching API without reading the whole frontend.
-2. Apply and validate the committed Supabase schema against a real project,
+1. Apply and validate the committed Supabase schema against a real project,
    then test auth, invites, storage, and realtime end to end.
+2. Configure the committed API scaffold with real Stripe and service-role
+   credentials, then validate checkout, portal, webhook, and RCUI crypto flows.
 3. Add smoke tests for the main user journeys:
    auth, dashboard, editor, export/import, and support tickets.
 4. Review editor save behavior and cloud/local fallback paths for edge cases.
